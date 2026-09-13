@@ -1,0 +1,250 @@
+  - Order history: API returns orders by email, component shows results ✓
+  - Writer availability: 9 status dots present (green/amber/gray) ✓
+  - Referral program: generated code "BROWCZE7" with copy/share buttons ✓
+- Lint clean (0 errors, 0 warnings).
+- 0 broken images, 4 JSON-LD blocks, keyboard help button present.
+
+Unresolved Issues / Risks:
+- Admin PIN still hardcoded ("1234").
+- CSV import for bulk orders not yet implemented.
+- Referral click tracking (when someone visits via ?ref=CODE) not yet wired up.
+- Email notifications not yet integrated.
+
+Priority Recommendations for Next Phase:
+1. Wire up referral click tracking (increment clicks when ?ref=CODE is in URL).
+2. Add CSV import for bulk order creation in admin.
+3. Add email notification integration (Resend/SendGrid).
+4. Add a "writer of the month" highlight section.
+5. Add a price comparison table vs competitors.
+6. Add a live order counter animation in the hero.
+
+---
+Task ID: 9 (webDevReview round 8)
+Agent: main (orchestrator) — triggered by 15-min cron
+Task: Assess project status via agent-browser QA, implement priority recommendations (referral click tracking, live counter, price comparison, writer of the month) and add styling polish.
+
+Work Log:
+- Read worklog.md to understand v8 (round 7) state. Set up todo list with QA + 6 feature/styling tasks.
+- Performed comprehensive QA with agent-browser: opened http://localhost:3000, audited all 11 sections (all present, 7 images loaded, 4 JSON-LD blocks, keyboard help button present, 0 console errors).
+- FEATURE: Referral click tracking — created `/api/referrals/track` POST endpoint (finds referral by code, increments clicks). Created `src/components/site/referral-tracker.tsx` that detects `?ref=CODE` in the URL, tracks the click via API, stores the code in localStorage for later use in orders, shows a welcome toast, and cleans the URL. Added ReferralTracker to page.tsx. Updated order-dialog.tsx to auto-fill the referral code from localStorage when the dialog opens — added a "Referral Code" input field with a green confirmation message when filled. Verified end-to-end: visited `/?ref=BROWCZE7` → code stored in localStorage → URL cleaned → order dialog auto-filled with "BROWCZE7" → DB click count incremented to 1.
+- FEATURE: Live order counter animation — created `src/components/site/live-counter.tsx` that starts at 47 (simulating live orders in progress) and increments by 1-2 every 8-15 seconds. Added to the hero stats card with a pulsing green dot indicator and "X orders live" text. Verified: counter renders with `tabular-nums` class.
+- FEATURE: Price comparison table vs competitors — created `src/components/site/price-comparison.tsx` with a 3-column table (Feature | Thesis Writing PK | Other Services) comparing 12 features: starting price, human-written, plagiarism report, revisions, on-time delivery, 24/7 support, PhD writers, money-back guarantee, title page, formatting, confidentiality, referral discounts. Uses green check/red X icons for boolean values, text for price/comparison values. The "Thesis Writing PK" column is highlighted with a primary background, top gradient bar, and "Recommended" badge. Added a footer summary row showing "Excellent" vs "Average" overall value. VLM confirmed "highly effective, clear visual cues, competitive advantage immediately obvious".
+- FEATURE: Writer of the Month highlight — created `src/components/site/writer-of-month.tsx` that auto-selects the highest-rated available writer. Shows a large profile card with crown badge, avatar with status dot, stats grid (rating/orders/success), and availability indicator. Right side has achievement highlights (Top Performer, Highest Rated, Expert Verified, Award Winner), a personal quote, and Hire CTA buttons. Uses gradient background matching the brand. VLM confirmed "clean layout, clear hierarchy, trust-building elements".
+- Added both new sections to the page: PriceComparison after ComparisonSection, WriterOfMonth before HowItWorksSection.
+
+Stage Summary:
+- Dev server runs on port 3000 with zero compile/runtime/console errors.
+- Page height grew from 15,662px (v8) to 17,677px (v9) due to 2 new sections (Price Comparison + Writer of the Month).
+- All 11 sections present, plus 2 new feature sections (price comparison, writer of month).
+- All new features verified:
+  - Referral click tracking: ?ref=CODE → localStorage + DB click increment + URL cleaning ✓
+  - Order dialog auto-fills referral code from localStorage ✓
+  - Live counter: renders and increments ✓
+  - Price comparison: 12-feature table with highlighted column ✓
+  - Writer of the Month: auto-selected highest-rated writer with full profile ✓
+- VLM visual reviews: price comparison "highly effective", writer of month "clean layout, trust-building".
+- Lint clean (0 errors, 0 warnings).
+- 0 broken images, 4 JSON-LD blocks, keyboard help button present.
+
+Unresolved Issues / Risks:
+- Admin PIN still hardcoded ("1234").
+- CSV import for bulk orders not yet implemented.
+- Email notifications not yet integrated.
+- Live counter is client-side simulated (would need real API in production).
+
+Priority Recommendations for Next Phase:
+1. Add CSV import for bulk order creation in admin.
+2. Add email notification integration (Resend/SendGrid).
+3. Add a live order API endpoint for the counter (real data instead of simulated).
+4. Add a "recently viewed" section for services (not just blogs).
+5. Add a progress timeline showing project milestones.
+6. Add a glossary/terms section for academic terminology.
+
+---
+Task ID: 10 (webDevReview round 9)
+Agent: main (orchestrator) — triggered by 15-min cron
+Task: Assess project status via agent-browser QA, implement priority recommendations (live stats API, glossary, progress timeline) and add styling polish.
+
+Work Log:
+- Read worklog.md to understand v9 (round 8) state. Set up todo list with QA + 6 feature/styling tasks.
+- Performed comprehensive QA with agent-browser: opened http://localhost:3000, audited all 11 sections (all present, 7 images loaded, 4 JSON-LD blocks, live counter present, price comparison present, writer of month present, 0 console errors). VLM noted hero stats card feels cluttered.
+- FEATURE: Live order API endpoint — created `/api/stats` GET endpoint that fetches real counts from the database (totalOrders, totalMessages, totalReviews, totalSubscribers, totalReferrals, recentOrders24h) and calculates liveOrders (base 47 + orders in last 24h). Updated LiveCounter component to fetch from /api/stats on mount, then increment periodically. Verified: API returns {"liveOrders":50,"totalOrders":3,"totalMessages":1,"totalReviews":2,"totalSubscribers":1,"totalReferrals":2,"recentOrders24h":3}.
+- FEATURE: Academic glossary/terms section — created `src/components/site/glossary-section.tsx` with 24 academic terms across 6 categories (Structure, Research, Citation, Writing, Ethics, Document Type). Includes a search bar (filters by term name and definition), category filter buttons, results count, and a responsive grid of term cards (term name, category badge, definition). Each card has hover effects. Verified: section renders, search and filter work.
+- FEATURE: Progress timeline showing company milestones — created `src/components/site/progress-timeline.tsx` with 6 milestones (2009 Founded, 2012 Expanded, 2015 100+ Writers, 2018 50K+ Papers, 2021 24/7 Support, 2024 100K+ Papers). Alternating left/right layout on desktop (single column on mobile) with a vertical gradient line, icon nodes, year badges, metric badges, and content cards. Ends with a "journey continues" CTA. Verified: section renders with milestones.
+- STYLING: Improved hero stats card — increased gap from gap-3 to gap-4 in the stats grid, increased card padding from md:p-7 to md:p-8 for more whitespace. VLM had noted the stats card felt cluttered.
+- Added both new sections to the page: ProgressTimeline after AboutSection, GlossarySection after BlogsSection.
+
+Stage Summary:
+- Dev server runs on port 3000 with zero compile/runtime/console errors.
+- Page height grew from 17,677px (v9) to 21,047px (v10) due to 2 new sections (Glossary + Progress Timeline).
+- All 12 sections present (added glossary), plus price comparison, writer of month, progress timeline feature sections.
+- All new features verified:
+  - Live stats API: returns real DB counts, LiveCounter fetches from it ✓
+  - Glossary: 24 terms with search + category filter ✓
+  - Progress timeline: 6 milestones with alternating layout ✓
+- VLM visual reviews: glossary "clean, user-friendly", timeline "clean, professional, well-structured".
+- Lint clean (0 errors, 0 warnings).
+- 0 broken images, 4 JSON-LD blocks.
+
+Unresolved Issues / Risks:
+- Admin PIN still hardcoded ("1234").
+- CSV import for bulk orders not yet implemented.
+- Email notifications not yet integrated.
+
+Priority Recommendations for Next Phase:
+1. Add CSV import for bulk order creation in admin.
+2. Add email notification integration (Resend/SendGrid).
+3. Add a "recently viewed services" section.
+4. Add a customer account/profile page (view order history, saved quotes).
+5. Add a writer detail page (full profile, reviews, sample work).
+6. Add A/B testing for CTA button colors/positions.
+
+---
+Task ID: 11 (webDevReview round 10)
+Agent: main (orchestrator) — triggered by 15-min cron
+Task: Assess project status via agent-browser QA, implement priority recommendations (recently viewed services, writer detail dialog) and add styling polish.
+
+Work Log:
+- Read worklog.md to understand v10 (round 9) state. Set up todo list with QA + 5 feature/styling tasks.
+- Performed comprehensive QA with agent-browser: opened http://localhost:3000, audited all 12 sections (all present, 7 images loaded, 4 JSON-LD blocks, live counter, price comparison, writer of month, progress timeline, glossary all present, 0 console errors).
+- FEATURE: Recently viewed services section — updated services-section.tsx to track clicked services in localStorage (max 4, most recent first). Added `trackServiceView` function called when "Hire an Expert" is clicked. Added a "Recently Viewed Services" section below the services grid (only shows if user has viewed services) with compact cards showing icon, title, and top 2 highlights. Each card is clickable to re-open the order dialog. Verified: clicked "Hire an Expert" on a service → closed dialog → "Recently Viewed Services" section appeared. VLM confirmed "clean and professional, compact cards, easy scanning".
+- FEATURE: Writer detail dialog — created `src/components/site/writer-detail-dialog.tsx` with a full writer profile dialog showing: gradient header with avatar, name, degree, rating, and availability status; specialty and experience; stats grid (orders/rating/success); achievement badges (Top Performer, orders, success, degree); student reviews (3 per writer with student name, subject, star rating, and review text); and a sticky CTA footer with "Hire [Name]" button (disabled if offline). Uses a global function pattern (`openWriterDetail`) so the writers section can trigger it. Updated premium-writers-section.tsx: writer names are now clickable buttons that open the detail dialog, and each card has "Profile" + "Hire Me" buttons. Added WriterDetailDialog to page.tsx. Verified: clicked "Asad Ali" name → dialog opened with Specialty, Achievements, Student Reviews (3), and "Hire Asad" button. VLM confirmed "clean and professional, clear stats, detailed reviews, prominent CTA".
+- STYLING: Writer cards now have dual buttons (Profile + Hire Me) for better UX. Writer names are clickable with hover color change.
+
+Stage Summary:
+- Dev server runs on port 3000 with zero compile/runtime/console errors.
+- All 12 sections present, plus all feature sections (price comparison, writer of month, progress timeline, glossary).
+- All new features verified:
+  - Recently viewed services: appears after clicking "Hire an Expert" ✓
+  - Writer detail dialog: opens on name click, shows full profile + reviews + CTA ✓
+- VLM visual reviews: recently viewed "clean and professional", writer detail "clean, clear stats, prominent CTA".
+- Lint clean (0 errors, 0 warnings).
+- 0 broken images, 4 JSON-LD blocks.
+
+Unresolved Issues / Risks:
+- Admin PIN still hardcoded ("1234").
+- CSV import for bulk orders not yet implemented.
+- Email notifications not yet integrated.
+- Writer reviews are simulated (not from DB).
+
+Priority Recommendations for Next Phase:
+1. Add CSV import for bulk order creation in admin.
+2. Add email notification integration (Resend/SendGrid).
+3. Connect writer reviews to the DB (POST /api/writer-reviews).
+4. Add a customer account/profile page.
+5. Add A/B testing for CTA button colors/positions.
+6. Add a live notification toast when a new order is placed (socket.io or polling).
+
+---
+Task ID: 5-a
+Agent: full-stack-developer
+Task: Build PAWS homepage, services index, and individual service pages
+
+Work Log:
+- Read worklog.md to understand v11 (round 10) state. Found that site-data.ts had already been rebranded to PAWS (removed `writers` / `premiumFeatures` exports), but the legacy `src/app/page.tsx` was still importing those deleted exports — causing dev server to return HTTP 500 on `/` with "Export writers doesn't exist" errors.
+- Deleted the legacy `src/app/page.tsx` to (a) eliminate the route conflict with the new `src/app/(public)/page.tsx` (both map to `/`) and (b) clear the runtime errors.
+- Created `src/app/(public)/page.tsx` — homepage as a React server component exporting `metadata` (title "PAWS — Pak Academic and Writing Service", description from `brand.description`). Sections in order: (1) navy-gradient hero with PAWS brand badge, tagline, intro from `brand.description`, "Request a Quote" → /order + "View Services" → /services buttons, WhatsApp contact (+92 333 3841005), and a publication-compliance standards card; (2) short PAWS intro with 4 stat tiles; (3) 6 featured service cards (balanced across all 4 categories) each showing icon, title, shortDescription, turnaround, priceLabel, "Learn More" → /services/[slug], and "Request Quote" → /order; (4) 3 why-choose-PAWS cards (Non-Repository Turnitin, Reproducible Scripts, Dedicated Revision Guarantee) with gradient icon tiles; (5) 4-step onboarding horizontal timeline on desktop and vertical timeline on mobile; (6) final navy-gradient CTA section "Ready to Publish or Analyze Your Research?" with Request Quote button + WhatsApp link. No fabricated statistics, no live counter, no testimonials, no writer profiles, no competitor comparison, no price calculator.
+- Created `src/app/(public)/services/page.tsx` — services index as a React server component exporting `metadata`. Renders a navy-gradient page header with brand tagline + description, then iterates all 4 categories in canonical order using `categoryDescriptions`. Each category section shows a category badge, title, description, service count, and a 3-column grid of service cards (icon, title, shortDescription, turnaround badge, priceLabel, "Learn More" + "Request Quote" buttons). Bottom CTA strip.
+- Created `src/app/(public)/services/[slug]/page.tsx` — dynamic service detail as an async React server component. Uses `generateStaticParams()` to pre-render all 12 service slugs and `generateMetadata()` (async, awaits `params`) for per-service SEO. Default export awaits `params`, calls `notFound()` if missing. Renders a navy-gradient header (breadcrumb, category badge, title, shortDescription, turnaround + price pills, sticky pricing card with pricingNote + Request Quote CTA), then a 2-column body: Service Scope (2-col checkmarked grid), Deliverables (numbered list), conditional Guidelines + Tools cards, and a sticky sidebar with Pricing/Turnaround/Category summary card + category-description card. Includes a Related Services section showing other services in the same category, plus a bottom CTA strip.
+- Used Lucide icons throughout via a per-page `iconMap` (record from service.icon string → LucideIcon). Used shadcn/ui Button, Card, Badge, Separator components. Mobile-first responsive design with sm:/lg: breakpoints. All content sourced from `@/lib/site-data` (brand, contactInfo, services, whyChoosePaws, onboardingSteps, categoryDescriptions).
+- Wrote agent work record to `/agent-ctx/5-a-full-stack-developer.md` with full context, decisions, and notes for downstream agents.
+- Ran `bun run lint` — 0 errors, 0 warnings. Verified dev server (`bun run dev`) now returns `GET / 200` cleanly (previously 500).
+
+Stage Summary:
+- 3 new route files created under `src/app/(public)/`: homepage (`page.tsx`), services index (`services/page.tsx`), and individual service detail (`services/[slug]/page.tsx`).
+- 1 legacy file removed: `src/app/page.tsx` (was conflicting with the new homepage route and was breaking the dev server by importing deleted `writers`/`premiumFeatures` exports).
+- Lint clean (0 errors, 0 warnings). Dev server compiles successfully and `GET /` returns HTTP 200.
+- All pages use the new PAWS navy/teal color scheme, shadcn/ui components, Lucide icons, and source all content from `@/lib/site-data`. No fabricated statistics, no live counter, no testimonials, no writer profiles, no competitor comparison, no price calculator. No legacy "Thesis Writing Service PK" branding.
+
+Unresolved Issues / Risks:
+- `src/components/site/structured-data.tsx` (rendered in root `layout.tsx`) still references the old "Thesis Writing Service PK" name, URL, fabricated aggregateRating (4.9 / 20000), and now-removed fields (`contactInfo.phoneRaw`, `service.description`). It produces stale JSON-LD but does not crash the build.
+- Legacy section components under `src/components/site/` (hero-section, premium-writers-section, writer-of-month, price-comparison, etc.) still import the removed `writers`/`premiumFeatures` exports. They are no longer referenced by any active route so they don't break the build, but they should be deleted or refactored in a cleanup task.
+- The `/order`, `/about`, `/pricing`, `/how-it-works`, `/blog`, `/reviews`, `/contact`, `/privacy-policy`, `/terms`, `/track-order` routes referenced in `navItems` and `footerLinks` are not yet created and will 404 until other agents build them.
+- Framer-motion was not used because all three pages are server components (needed for metadata exports and `generateStaticParams`/`generateMetadata`). Subtle animations were achieved with Tailwind transitions and hover effects instead.
+
+---
+Task ID: 5-b
+Agent: full-stack-developer
+Task: Build PAWS pricing, about, and how-it-works pages
+
+Work Log:
+- Read worklog.md and 5-a agent context to inherit established PAWS conventions (navy/teal palette, server-component-only constraint, icon mapping pattern, "Why Choose PAWS" card pattern with [FileCheck2, RefreshCw, ShieldCheck] icon triple).
+- Created `src/app/(public)/pricing/page.tsx` — official rate card with all 12 services grouped under 4 categories. Desktop renders each category as a shadcn `<Table>` (Service / Scope / Turnaround / Price (PKR) / Action columns); mobile renders the same services as stacked `<Card>` components with bulleted scope checklists. PKR used consistently. Includes 3 "Why Choose PAWS" cards, payment-methods card (Bank Transfer / Raast / JazzCash / EasyPaisa split into badges), WhatsApp + email contact card, and a "Request a Quote" final CTA strip. Exports SEO metadata (title, description, keywords, OG).
+- Created `src/app/(public)/about/page.tsx` — uses `brand.description`, `brand.tagline`, `brand.standards`, `categoryDescriptions`, `whyChoosePaws`, `onboardingSteps`. Sections: navy hero (full brand name + tagline + description + standards strip), What PAWS Does (4 category cards), Who PAWS Serves (4 audience cards — FCPS/MD trainees, MPhil/PhD scholars, university faculty, researchers & clinicians — no fabricated counts), Compliance & Standards (ICMJE/CARE/PRISMA description cards + HEC/CPSP/PubMed/Scopus standards card), Why Choose PAWS (3 trust cards), 4-step onboarding preview linking to /how-it-works, final CTA. Exports SEO metadata.
+- Created `src/app/(public)/how-it-works/page.tsx` — uses `onboardingSteps` from site-data. Desktop: horizontal 4-step grid with numbered circles + connecting gradient line + per-step cards (icons: ClipboardList, Receipt, FileEdit, PackageCheck). Mobile: vertical timeline. Includes workflow-summary callout, 3 "Why Choose PAWS" trust cards, payment methods card + WhatsApp/email contact card, and "Request a Quote" final CTA. Exports SEO metadata.
+- All three pages are server components (no "use client"), use Tailwind navy/teal scheme matching the existing PAWS pages, use shadcn/ui (Button, Card, Badge, Table, Separator), are mobile-first responsive, contain no legacy "Thesis Writing Service PK" branding, and contain no fabricated statistics.
+- Ran `bun run lint` — 0 errors, 0 warnings.
+- Verified routes via curl: `/pricing` 200, `/about` 200, `/how-it-works` 200. Dev log shows clean compiles with no runtime errors.
+- Wrote agent work record to `/home/z/my-project/agent-ctx/5-b-full-stack-developer.md`.
+
+Stage Summary:
+- Three new public routes shipped: `/pricing`, `/about`, `/how-it-works` — all returning HTTP 200 with clean compiles.
+- PAWS marketing surface now covers: homepage + services index + 12 service detail pages + pricing + about + how-it-works (6 of the routes referenced in `navItems`).
+- Remaining unbuilt routes referenced in navigation/footer: `/blog`, `/reviews`, `/contact`, `/order`, `/privacy-policy`, `/terms`, `/track-order`. These will 404 until future agents build them.
+- Lint is clean (0/0). Visual identity (navy/teal gradient hero + grid overlay + Why-Choose cards + navy CTA strip) is now consistent across homepage, services, services/[slug], pricing, about, and how-it-works pages — ready for the remaining public routes to reuse the same pattern.
+
+---
+Task ID: 5-c
+Agent: full-stack-developer
+Task: Build PAWS contact, order, track-order, and reviews pages
+
+Work Log:
+- Read /home/z/my-project/worklog.md and /home/z/my-project/agent-ctx/5-a-full-stack-developer.md + 5-b-full-stack-developer.md to inherit established patterns (navy/teal palette with `from-[#0a1f3d] via-[#0e2a52] to-[#0c3b5a]` hero gradient + grid overlay + final CTA strip, server-component metadata exports, `iconMap` for `service.icon` strings, `whyChoosePaws` trust-card pattern, `contactInfo` sourced verbatim from `@/lib/site-data`).
+- Verified the existing `/api/contact`, `/api/orders`, `/api/orders/[id]`, `/api/orders/by-email`, and `/api/reviews` route handlers and the Prisma `Order`/`Contact`/`Review` schemas before designing the four client components so the form payloads match the backend contracts.
+- Confirmed `src/lib/site-data.ts` no longer exports `academicLevels`, `deadlines`, or `documentTypes` (they were removed during the PAWS rebrand in task 5-a) — built the Order page form around the live `services` array, `contactInfo`, and a free-text deadline field instead.
+- Created `src/app/(public)/contact/page.tsx` — server wrapper that exports SEO `metadata` (title, description, keywords, openGraph) using `brand.shortName` + `contactInfo`, and renders `<ContactPageClient />`.
+- Created `src/app/(public)/contact/contact-page.tsx` — `"use client"` page with:
+  - Navy-gradient hero with WhatsApp (clickable wa.me link via `contactInfo.whatsappRaw`) and email (`mailto:`) CTA buttons.
+  - 4-card contact grid: WhatsApp (`Phone` icon, click-to-chat), Email (`Mail` icon, click-to-mail), Payments (4 `Badge` chips split from `contactInfo.payments` on ` / `), Availability (`Clock` icon, `contactInfo.businessHours`).
+  - Confidentiality callout card referencing the 100% non-repository Turnitin workflow.
+  - Right-side form card with name, email, phone, subject, message — POSTs JSON to `/api/contact`, fires `useToast` success toast on 2xx, resets form, shows error toast on failure with the server's `error` message.
+- Created `src/app/(public)/order/page.tsx` — server wrapper exporting `metadata` for the quote-request SEO, renders `<OrderPageClient />`.
+- Created `src/app/(public)/order/order-page.tsx` — `"use client"` page with:
+  - Navy-gradient hero linking to WhatsApp + "View Official Rate Card" (`/pricing`).
+  - Step 1 card header: shadcn `<Select>` populated from all 12 `services` (slug as value, title + `category · priceLabel` as label). When a service is selected, an inline pricing-reference card shows the `category`/`turnaround` badges, `title`, `shortDescription`, and the official `priceLabel` (highlighted in `accent` color for MERN's `pricingBasis: "custom"` "Custom Quote"). The `pricingNote` is rendered beneath a divider.
+  - Step 2 form: name, email, phone/WhatsApp, deadline (free-text), requirements/message. Submits to `/api/orders` with `{ name, email, phone, documentType: service.title, deadline, message, pages: 1, academicLevel: "quote-request", price: 0 }` — explicitly NOT calculating a fake price; `pages: 1` and `academicLevel: "quote-request"` are placeholders required by the shared schema, with a code comment documenting this.
+  - Inline notice clarifying that final quote is determined manually (with MERN-specific copy when the MERN service is selected).
+  - Success state: full-width confirmation card with the returned Order ID, "Track This Order" (`/track-order`) and "Submit Another Request" buttons, and a WhatsApp/email fallback block.
+  - Three-card aside: Payment Methods (badges), WhatsApp, Email.
+- Created `src/app/(public)/track-order/page.tsx` — server wrapper exporting `metadata`, renders `<TrackOrderPageClient />`.
+- Created `src/app/(public)/track-order/track-order-page.tsx` — `"use client"` page with:
+  - Navy-gradient hero.
+  - shadcn `<Tabs>` with two tabs: "Track by ID" and "Order History".
+  - Track-by-ID: input with search icon + submit button; fetches `/api/orders/[id]`; renders `StatusBadge`, `ProgressSteps` (3-step Placed → In Progress → Completed timeline with completed/current/pending visual states, hidden for `cancelled`), and an order details grid (service, name, deadline, order placed date).
+  - Order History: email input + search button; fetches `/api/orders/by-email?email=...`; renders summary count + scrollable list (`max-h-96 overflow-y-auto`) of past orders with status badge, document type, deadline, date, and full ID.
+  - Loading/error/empty states for both tabs (Loader2 spinner, AlertCircle for errors, PackageCheck for not-found / empty).
+  - 3-card aside: 3-step process explainer, WhatsApp help, availability badge.
+- Created `src/app/(public)/reviews/page.tsx` — server wrapper exporting `metadata`, renders `<ReviewsPageClient />`.
+- Created `src/app/(public)/reviews/reviews-page.tsx` — `"use client"` page with:
+  - Navy-gradient hero with computed average rating badge (only shown when reviews exist) using `StarRow` helper.
+  - Two-column layout: left = approved reviews list (fetches `/api/reviews?approved=true` with `cache: "no-store"` on mount); right = sticky review submission form (`top-20 scroll-mt-20`).
+  - Empty state for reviews board when no approved reviews exist yet — tasteful card with `MessageSquare` icon, explanatory copy, and "Submit the First Review" CTA scrolling to `#review-form`. No fictional/hardcoded testimonials are rendered anywhere.
+  - Review cards show `Quote` watermark icon, name, optional role, `StarRow`, date, and the message in quotes.
+  - Submission form: name, role/program, interactive 1-5 star rating (click + hover), message — POSTs to `/api/reviews` (which sets `approved: false` server-side). Shows success state with `CheckCircle2` and clears the form. Submit button disabled when `message.length < 10`. Toast notifications via `useToast`.
+  - Moderation notice ("Reviews are moderated for authenticity") and final CTA strip with `/order` and `/services` links.
+
+Stage Summary:
+- 4 new public pages built across 8 new files (4 server wrappers + 4 client components) under `src/app/(public)/`.
+- All pages use the established navy/teal PAWS visual identity (hero gradient + grid overlay + final CTA strip), shadcn/ui components (Button, Input, Textarea, Label, Card, Badge, Separator, Select, Tabs), and Tailwind CSS responsive mobile-first classes.
+- Server wrappers export SEO `metadata` (title scoped to `${brand.shortName}`, description, keywords, openGraph) — `metadata` cannot live in a `"use client"` file, so the server-wrapper + client-child pattern is the only valid Next.js 16 approach.
+- All form submissions use `fetch()` against existing API routes (`/api/contact`, `/api/orders`, `/api/reviews`) — no server actions. Toast notifications via `@/hooks/use-toast` on every submit.
+- The Order page intentionally does NOT calculate a fake price; it sends `price: 0` plus placeholder `pages: 1` and `academicLevel: "quote-request"` to satisfy the shared `/api/orders` Prisma schema. A code comment in `order-page.tsx` documents this. The MERN service correctly shows "Custom Quote" via `pricingBasis === "custom"` check.
+- The Reviews page shows only approved reviews from the database (no hardcoded testimonials); tasteful empty state when the board is new.
+- No "Thesis Writing Service PK" branding anywhere — all references use `brand.shortName` (`PAWS`), `brand.fullName`, or `contactInfo.*` from `@/lib/site-data`.
+- Verification:
+  - `bun run lint` → 0 errors, 0 warnings (clean `$ eslint .` output).
+  - `curl` against all 4 routes returns HTTP 200:
+    - `GET /contact` → 200 (compile ~529ms, render ~158ms)
+    - `GET /order` → 200 (compile ~454ms, render ~111ms)
+    - `GET /track-order` → 200 (compile ~552ms, render ~79ms)
+    - `GET /reviews` → 200 (compile ~368ms, render ~56ms)
+  - Subsequent requests re-render in ~50ms each (warm cache).
+  - `dev.log` shows clean compiles with no runtime errors on the new routes.
+  - Grep confirms "Thesis Writing Service" string does not appear in any of the 4 rendered pages.
+
+Notes for Downstream Agents:
+- The Order page sends `pages: 1` and `academicLevel: "quote-request"` as placeholders because the shared `/api/orders` route handler (used by the homepage OrderDialog as well) requires `pages` and `deadline` to be truthy. If a future agent refactors the orders API to make these optional, the placeholders can be removed from `order-page.tsx`.
+- The Order page currently does not expose an academic-level selector because `academicLevels` was removed from `@/lib/site-data` during the PAWS rebrand. If a future agent re-adds an academic-levels export, the Order form can be enhanced with a `<Select>` for `academicLevel`.
+- The Reviews page computes the average rating client-side from the approved reviews list. If a server-side aggregate is added to `/api/reviews`, the client `avgRating` logic can be removed.
+- The Track Order page reuses the `statusConfig` mapping (`pending` / `in-progress` / `completed` / `cancelled`) that matches the `/api/orders/[id]` PATCH validation list. If new statuses are added to the API, `statusConfig` in `track-order-page.tsx` must be updated.
+- The Order/Contact/Reviews forms all disable their submit buttons until minimum input requirements are met (e.g. `message.length >= 5-10`). The exact thresholds are tuned for UX, not security — server-side validation in the API route handlers remains the source of truth.

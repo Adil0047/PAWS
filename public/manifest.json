@@ -1,0 +1,17 @@
+{
+  "name": "PAWS — Pak Academic and Writing Service",
+  "short_name": "PAWS",
+  "description": "Publication-grade manuscript writing, advanced statistical modeling, and non-repository plagiarism reduction.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0a1f3d",
+  "theme_color": "#0a1f3d",
+  "icons": [
+    {
+      "src": "/favicon.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

@@ -1,0 +1,621 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+}
+
+:root {
+  --radius: 0.75rem;
+  /* PAWS — Deep navy/blue foundation with green/teal accents */
+  --background: oklch(0.99 0.003 240);
+  --foreground: oklch(0.2 0.03 240);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.2 0.03 240);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.2 0.03 240);
+  --primary: oklch(0.35 0.08 240);
+  --primary-foreground: oklch(0.99 0.003 240);
+  --secondary: oklch(0.96 0.008 240);
+  --secondary-foreground: oklch(0.3 0.03 240);
+  --muted: oklch(0.96 0.005 240);
+  --muted-foreground: oklch(0.48 0.015 240);
+  --accent: oklch(0.55 0.1 180);
+  --accent-foreground: oklch(0.99 0.003 240);
+  --destructive: oklch(0.577 0.245 27.325);
+  --border: oklch(0.9 0.005 240);
+  --input: oklch(0.92 0.005 240);
+  --ring: oklch(0.35 0.08 240);
+  --chart-1: oklch(0.35 0.08 240);
+  --chart-2: oklch(0.55 0.1 180);
+  --chart-3: oklch(0.6 0.08 200);
+  --chart-4: oklch(0.5 0.1 160);
+  --chart-5: oklch(0.45 0.12 280);
+  --sidebar: oklch(0.985 0.003 240);
+  --sidebar-foreground: oklch(0.2 0.03 240);
+  --sidebar-primary: oklch(0.35 0.08 240);
+  --sidebar-primary-foreground: oklch(0.985 0.003 240);
+  --sidebar-accent: oklch(0.96 0.008 240);
+  --sidebar-accent-foreground: oklch(0.3 0.03 240);
+  --sidebar-border: oklch(0.9 0.005 240);
+  --sidebar-ring: oklch(0.35 0.08 240);
+}
+
+.dark {
+  --background: oklch(0.16 0.02 240);
+  --foreground: oklch(0.97 0.003 240);
+  --card: oklch(0.21 0.025 240);
+  --card-foreground: oklch(0.97 0.003 240);
+  --popover: oklch(0.21 0.025 240);
+  --popover-foreground: oklch(0.97 0.003 240);
+  --primary: oklch(0.6 0.08 240);
+  --primary-foreground: oklch(0.16 0.02 240);
+  --secondary: oklch(0.27 0.02 240);
+  --secondary-foreground: oklch(0.97 0.003 240);
+  --muted: oklch(0.27 0.015 240);
+  --muted-foreground: oklch(0.72 0.01 240);
+  --accent: oklch(0.55 0.1 180);
+  --accent-foreground: oklch(0.16 0.02 240);
+  --destructive: oklch(0.704 0.191 22.216);
+  --border: oklch(1 0 0 / 12%);
+  --input: oklch(1 0 0 / 15%);
+  --ring: oklch(0.6 0.08 240);
+  --chart-1: oklch(0.6 0.08 240);
+  --chart-2: oklch(0.55 0.1 180);
+  --chart-3: oklch(0.6 0.08 200);
+  --chart-4: oklch(0.5 0.1 160);
+  --chart-5: oklch(0.55 0.12 280);
+  --sidebar: oklch(0.21 0.025 240);
+  --sidebar-foreground: oklch(0.97 0.003 240);
+  --sidebar-primary: oklch(0.6 0.08 240);
+  --sidebar-primary-foreground: oklch(0.16 0.02 240);
+  --sidebar-accent: oklch(0.27 0.02 240);
+  --sidebar-accent-foreground: oklch(0.97 0.003 240);
+  --sidebar-border: oklch(1 0 0 / 12%);
+  --sidebar-ring: oklch(0.6 0.08 240);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: "cv11", "ss01";
+  }
+}
+
+/* Custom scrollbar for long lists */
+.custom-scroll::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+.custom-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+.custom-scroll::-webkit-scrollbar-thumb {
+  background: oklch(0.8 0.02 145);
+  border-radius: 9999px;
+}
+.custom-scroll::-webkit-scrollbar-thumb:hover {
+  background: oklch(0.7 0.04 145);
+}
+
+/* Subtle academic grid background */
+.bg-academic-grid {
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+  background-size: 32px 32px;
+}
+
+/* Dotted pattern for section backgrounds — navy/blue tones */
+.bg-dots {
+  background-image: radial-gradient(circle, oklch(0.45 0.08 240 / 0.18) 1.2px, transparent 1.2px);
+  background-size: 22px 22px;
+}
+
+/* Dotted pattern — light variant for dark sections */
+.bg-dots-light {
+  background-image: radial-gradient(circle, rgba(255, 255, 255, 0.12) 1.2px, transparent 1.2px);
+  background-size: 22px 22px;
+}
+
+/* Animated gradient divider — horizontal line with shifting gradient */
+.gradient-divider {
+  position: relative;
+  height: 2px;
+  width: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    oklch(0.35 0.08 240) 20%,
+    oklch(0.55 0.1 180) 50%,
+    oklch(0.35 0.08 240) 80%,
+    transparent 100%
+  );
+  background-size: 200% 100%;
+  animation: gradient-shift 6s ease infinite;
+  border-radius: 9999px;
+}
+
+/* Shine sweep effect — a light band sweeps across the element on hover */
+.shine-sweep {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+.shine-sweep::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    105deg,
+    transparent 30%,
+    rgba(255, 255, 255, 0.35) 48%,
+    rgba(255, 255, 255, 0.55) 50%,
+    rgba(255, 255, 255, 0.35) 52%,
+    transparent 70%
+  );
+  transform: translateX(-120%);
+  transition: transform 0.9s ease;
+  pointer-events: none;
+  z-index: 2;
+}
+.shine-sweep:hover::after {
+  transform: translateX(120%);
+}
+
+/* Continuous shine sweep for hero (auto-animates on a loop) */
+.shine-sweep-auto {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+.shine-sweep-auto::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    105deg,
+    transparent 35%,
+    rgba(255, 255, 255, 0.12) 48%,
+    rgba(255, 255, 255, 0.22) 50%,
+    rgba(255, 255, 255, 0.12) 52%,
+    transparent 65%
+  );
+  transform: translateX(-120%);
+  animation: shine-sweep-loop 7s ease-in-out infinite;
+  pointer-events: none;
+  z-index: 2;
+}
+@keyframes shine-sweep-loop {
+  0% { transform: translateX(-120%); }
+  55%, 100% { transform: translateX(120%); }
+}
+
+/* Card hover glow — lift + soft teal glow + animated gradient top border */
+.card-hover-glow {
+  position: relative;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+  will-change: transform;
+}
+.card-hover-glow::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(
+    90deg,
+    oklch(0.35 0.08 240),
+    oklch(0.55 0.1 180),
+    oklch(0.35 0.08 240)
+  );
+  background-size: 200% 100%;
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+  animation: gradient-shift 4s ease infinite;
+}
+.card-hover-glow::after {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  box-shadow: 0 0 0 0 oklch(0.55 0.1 180 / 0);
+  transition: box-shadow 0.35s ease;
+  pointer-events: none;
+}
+.card-hover-glow:hover {
+  transform: translateY(-6px);
+  border-color: transparent;
+  box-shadow:
+    0 18px 40px -16px oklch(0.35 0.08 240 / 0.35),
+    0 8px 24px -12px oklch(0.55 0.1 180 / 0.25);
+}
+.card-hover-glow:hover::before {
+  opacity: 1;
+}
+.card-hover-glow:hover::after {
+  box-shadow:
+    0 0 0 1px oklch(0.55 0.1 180 / 0.35),
+    0 0 24px 0 oklch(0.55 0.1 180 / 0.25);
+}
+
+/* Gradient top border that animates in on hover */
+.gradient-top-border {
+  position: relative;
+  overflow: hidden;
+}
+.gradient-top-border::before {
+  content: "";
+  position: absolute;
+  inset-inline: 0;
+  top: 0;
+  height: 3px;
+  background: linear-gradient(
+    90deg,
+    oklch(0.35 0.08 240),
+    oklch(0.55 0.1 180),
+    oklch(0.35 0.08 240)
+  );
+  background-size: 200% 100%;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.45s ease;
+  animation: gradient-shift 4s ease infinite;
+}
+.gradient-top-border:hover::before {
+  transform: scaleX(1);
+}
+
+/* Marquee container + track */
+.marquee {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(
+    90deg,
+    transparent 0%,
+    #000 8%,
+    #000 92%,
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    90deg,
+    transparent 0%,
+    #000 8%,
+    #000 92%,
+    transparent 100%
+  );
+}
+.marquee__track {
+  display: flex;
+  flex-shrink: 0;
+  min-width: 200%;
+  gap: 1rem;
+  animation: marquee 32s linear infinite;
+}
+.marquee:hover .marquee__track {
+  animation-play-state: paused;
+}
+.marquee__track--reverse {
+  animation-direction: reverse;
+}
+
+/* PAWS hero mesh — navy/teal gradient */
+.paws-hero-mesh {
+  background:
+    radial-gradient(50% 50% at 15% 25%, oklch(0.35 0.1 200 / 0.4) 0%, transparent 55%),
+    radial-gradient(40% 40% at 85% 35%, oklch(0.55 0.1 180 / 0.3) 0%, transparent 50%),
+    radial-gradient(35% 35% at 60% 85%, oklch(0.45 0.08 220 / 0.25) 0%, transparent 55%),
+    linear-gradient(135deg, #0a1f3d 0%, #0e2a52 50%, #0c3b5a 100%);
+}
+
+/* Glassmorphism card */
+.glass-card {
+  background: rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+/* Glow border on hover */
+.glow-border {
+  position: relative;
+  transition: box-shadow 0.3s ease, border-color 0.3s ease;
+}
+.glow-border:hover {
+  border-color: oklch(0.55 0.1 180 / 0.5);
+  box-shadow:
+    0 0 0 1px oklch(0.55 0.1 180 / 0.2),
+    0 4px 24px oklch(0.55 0.1 180 / 0.15);
+}
+
+/* Gradient text */
+.gradient-text {
+  background: linear-gradient(135deg, oklch(0.55 0.1 180), oklch(0.65 0.08 200), oklch(0.55 0.1 180));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+
+/* Animated gradient border */
+@keyframes gradient-shift {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+.animated-border {
+  background: linear-gradient(90deg, oklch(0.35 0.08 240), oklch(0.55 0.1 180), oklch(0.35 0.08 240));
+  background-size: 200% 100%;
+  animation: gradient-shift 3s ease infinite;
+}
+
+/* Floating animation */
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+.animate-float {
+  animation: float 4s ease-in-out infinite;
+}
+
+/* Shine effect */
+@keyframes shine {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+.shine-effect {
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+  background-size: 200% 100%;
+  animation: shine 3s ease-in-out infinite;
+}
+
+/* Hero gradient mesh */
+.hero-mesh {
+  background:
+    radial-gradient(60% 60% at 15% 20%, oklch(0.45 0.11 160 / 0.95) 0%, transparent 60%),
+    radial-gradient(50% 50% at 85% 30%, oklch(0.55 0.13 160 / 0.85) 0%, transparent 55%),
+    radial-gradient(40% 40% at 70% 90%, oklch(0.72 0.14 75 / 0.5) 0%, transparent 60%),
+    linear-gradient(135deg, oklch(0.3 0.05 165) 0%, oklch(0.4 0.09 162) 100%);
+}
+
+/* Slider thumb visibility enhancement */
+[data-slot="slider-range"] {
+  background: var(--primary) !important;
+}
+[data-slot="slider-thumb"] {
+  background: var(--primary) !important;
+  border: 3px solid white !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2) !important;
+  height: 22px !important;
+  width: 22px !important;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+[data-slot="slider-thumb"]:hover {
+  transform: scale(1.15);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3) !important;
+}
+[data-slot="slider-thumb"]:active {
+  transform: scale(1.25);
+}
+[data-slot="slider-track"] {
+  height: 8px !important;
+  background: var(--muted) !important;
+}
+
+/* Marquee animation for trust bar */
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+.animate-marquee {
+  animation: marquee 30s linear infinite;
+}
+
+/* Count-up shimmer */
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+/* Soft float */
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+.animate-float {
+  animation: float 4s ease-in-out infinite;
+}
+
+/* Decorative underline */
+.fancy-underline {
+  position: relative;
+  display: inline-block;
+}
+.fancy-underline::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: -8px;
+  width: 60px;
+  height: 3px;
+  transform: translateX(-50%);
+  background: linear-gradient(90deg, oklch(0.35 0.08 240), oklch(0.55 0.1 180));
+  border-radius: 9999px;
+}
+
+/* Glassmorphism on hover — for "why choose" cards */
+.glass-hover {
+  position: relative;
+  transition: transform 0.3s ease, background 0.4s ease, border-color 0.4s ease, box-shadow 0.3s ease;
+  will-change: transform;
+}
+.glass-hover::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(
+    135deg,
+    oklch(0.55 0.1 180 / 0.08),
+    oklch(0.35 0.08 240 / 0.04)
+  );
+  opacity: 0;
+  transition: opacity 0.35s ease;
+  pointer-events: none;
+}
+.glass-hover:hover {
+  transform: translateY(-6px);
+  background: oklch(0.55 0.1 180 / 0.04);
+  border-color: oklch(0.55 0.1 180 / 0.35);
+  box-shadow:
+    0 18px 40px -16px oklch(0.35 0.08 240 / 0.3),
+    0 0 0 1px oklch(0.55 0.1 180 / 0.18) inset;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+.glass-hover:hover::before {
+  opacity: 1;
+}
+
+/* Float variations — different delays for layered decorative shapes */
+@keyframes float-slow {
+  0%, 100% { transform: translate(0, 0) rotate(0deg); }
+  33% { transform: translate(8px, -14px) rotate(3deg); }
+  66% { transform: translate(-6px, -8px) rotate(-2deg); }
+}
+.animate-float-slow {
+  animation: float-slow 9s ease-in-out infinite;
+}
+@keyframes float-medium {
+  0%, 100% { transform: translate(0, 0); }
+  50% { transform: translate(-10px, -16px); }
+}
+.animate-float-medium {
+  animation: float-medium 6s ease-in-out infinite;
+}
+@keyframes drift {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(12px, -10px) scale(1.05); }
+}
+.animate-drift {
+  animation: drift 11s ease-in-out infinite;
+}
+
+/* Gradient icon container — animates on parent hover */
+.gradient-icon-hover {
+  transition: background 0.35s ease, color 0.35s ease, transform 0.35s ease, box-shadow 0.35s ease;
+}
+.group:hover .gradient-icon-hover {
+  background: linear-gradient(135deg, oklch(0.35 0.08 240), oklch(0.55 0.1 180));
+  color: oklch(0.99 0.003 240);
+  transform: scale(1.05) rotate(-3deg);
+  box-shadow: 0 8px 20px -8px oklch(0.55 0.1 180 / 0.5);
+}
+
+/* Animated mesh gradient background for CTA sections */
+.animated-mesh {
+  background:
+    radial-gradient(40% 50% at 20% 30%, oklch(0.55 0.1 180 / 0.25) 0%, transparent 55%),
+    radial-gradient(35% 45% at 80% 25%, oklch(0.45 0.1 200 / 0.22) 0%, transparent 55%),
+    radial-gradient(40% 50% at 60% 85%, oklch(0.6 0.08 220 / 0.18) 0%, transparent 55%),
+    linear-gradient(135deg, #0a1f3d 0%, #0e2a52 50%, #0c3b5a 100%);
+  background-size: 200% 200%, 200% 200%, 200% 200%, 100% 100%;
+  animation: mesh-shift 14s ease-in-out infinite;
+}
+@keyframes mesh-shift {
+  0%, 100% { background-position: 0% 0%, 100% 0%, 50% 100%, 0 0; }
+  50% { background-position: 30% 20%, 70% 30%, 30% 80%, 0 0; }
+}
+
+/* Glow border wrap — for highlighted cards (budget calculator etc.) */
+.glow-border-wrap {
+  position: relative;
+  border-radius: 1rem;
+  background: linear-gradient(
+    135deg,
+    oklch(0.35 0.08 240),
+    oklch(0.55 0.1 180),
+    oklch(0.45 0.1 200),
+    oklch(0.35 0.08 240)
+  );
+  background-size: 300% 300%;
+  padding: 1.5px;
+  animation: gradient-shift 8s ease infinite;
+  box-shadow: 0 0 30px -8px oklch(0.55 0.1 180 / 0.35);
+}
+.glow-border-wrap > * {
+  border-radius: calc(1rem - 1.5px);
+  background: var(--card);
+  height: 100%;
+}
+
+/* Popular/recommended badge pulse */
+@keyframes badge-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 oklch(0.55 0.1 180 / 0.5); }
+  50% { box-shadow: 0 0 0 6px oklch(0.55 0.1 180 / 0); }
+}
+.badge-pulse {
+  animation: badge-pulse 2.4s ease-out infinite;
+}
+
+/* Table row hover highlight */
+.row-hover {
+  transition: background 0.25s ease;
+}
+.row-hover:hover {
+  background: oklch(0.55 0.1 180 / 0.05);
+}
+
+/* Spin-slow for decorative ring shapes */
+@keyframes spin-slow {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+.animate-spin-slow {
+  animation: spin-slow 28s linear infinite;
+}

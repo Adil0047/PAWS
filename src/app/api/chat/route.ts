@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/db";
+import { isAdminAuthed } from "@/lib/auth";
 
 interface ChatMessage {
   id: string;
@@ -367,7 +368,7 @@ export async function GET(req: NextRequest) {
     const dbCount = chatModel ? await chatModel.count() : 0;
 
     let recentSessions: unknown[] = [];
-    if (includeSessions && chatModel) {
+    if (includeSessions && chatModel && isAdminAuthed(req.headers.get("cookie"))) {
       const raw = await chatModel.findMany({
         orderBy: { updatedAt: "desc" },
         take: 20,

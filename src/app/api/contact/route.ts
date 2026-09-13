@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/db";
+import { isAdminAuthed } from "@/lib/auth";
 
 export async function POST(req: NextRequest) {
   try {
@@ -33,7 +34,11 @@ export async function POST(req: NextRequest) {
   }
 }
 
-export async function GET() {
+export async function GET(req: NextRequest) {
+  if (!isAdminAuthed(req.headers.get("cookie"))) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
   try {
     const messages = await db.contact.findMany({
       orderBy: { createdAt: "desc" },

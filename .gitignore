@@ -30,25 +30,44 @@ yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
 
-# env files (can opt-in for committing if needed)
-.env*
+# ===== ENVIRONMENT FILES (NEVER COMMIT SECRETS) =====
+.env
+.env.*
+!.env.example
 
-# vercel
+# ===== DATABASE FILES (old SQLite — no longer needed) =====
+db/
+*.db
+*.db-journal
+
+# ===== VERCEL =====
 .vercel
 
-
-# typescript
+# ===== TYPESCRIPT =====
 *.tsbuildinfo
 next-env.d.ts
+
+# ===== LOCAL DEV ARTIFACTS =====
+dev.log
+server.log
+dev.out.log
 local-*
 .claude
 .z-ai-config
 *.log
-dev.log
-dev.out.log
-test
 prompt
 
-server.log
-# Skills directory
+# ===== AGENT/SKILL DIRECTORIES (not needed in production) =====
 /skills/
+/agent-ctx/
+/upload/
+
+# ===== MINI-SERVICES (not deployed to Vercel) =====
+/mini-services/
+
+# ===== EXAMPLES & TESTS =====
+/examples/
+/tests/
+/download/
+examples/
+src/components/site/_old/

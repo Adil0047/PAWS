@@ -1,5 +1,5 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
+// PAWS — Prisma schema for PostgreSQL production
+// learn more: https://pris.ly/d/prisma-schema
 
 generator client {
   provider = "prisma-client-js"
@@ -11,20 +11,20 @@ datasource db {
 }
 
 model Order {
-  id           String   @id @default(cuid())
-  name         String
-  email        String
-  phone        String
-  academicLevel String
-  documentType String
-  pages        Int
-  deadline     String
-  price        Float
-  message      String?
+  id              String   @id @default(cuid())
+  name            String
+  email           String
+  phone           String
+  academicLevel   String
+  documentType    String
+  pages           Int
+  deadline        String
+  price           Float
+  message         String?
   preferredWriter String?
-  status       String   @default("pending")
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+  status          String   @default("pending")
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
 }
 
 model Contact {
@@ -57,22 +57,22 @@ model Review {
 }
 
 model ChatSession {
-  id         String        @id @default(cuid())
-  visitorName String
-  visitorEmail String?
-  messages   String        // JSON-encoded array of {id, sender, content, timestamp}
-  messageCount Int         @default(0)
-  createdAt  DateTime      @default(now())
-  updatedAt  DateTime      @updatedAt
+  id            String   @id @default(cuid())
+  visitorName   String
+  visitorEmail  String?
+  messages      String   // JSON-encoded array of {id, sender, content, timestamp}
+  messageCount  Int      @default(0)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
 }
 
 model Referral {
-  id          String   @id @default(cuid())
-  referrerEmail String  @unique
-  referrerName String
-  referralCode String   @unique
-  clicks      Int      @default(0)
-  signups     Int      @default(0)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id            String   @id @default(cuid())
+  referrerEmail String   @unique
+  referrerName  String
+  referralCode  String   @unique
+  clicks        Int      @default(0)
+  signups       Int      @default(0)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
 }

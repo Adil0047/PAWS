@@ -31,6 +31,7 @@ import {
   Lock,
   User2,
   Download,
+  Loader2,
 } from "lucide-react";
 import { AdminSkeletonStats, AdminSkeletonCards } from "@/components/site/admin-skeletons";
 import { AdminCharts } from "@/components/site/admin-charts";
@@ -112,12 +113,15 @@ export function AdminPanel({ inline = false }: { inline?: boolean }) {
   const [authed, setAuthed] = useState(false);
   const [pinInput, setPinInput] = useState("");
   const [pinError, setPinError] = useState(false);
-  // Demo PIN — in production this would be a server-validated credential
-  const ADMIN_PIN = "1234";
+  const [pinVerifying, setPinVerifying] = useState(false);
 
-  // Persist auth in sessionStorage so it survives page reloads but not new sessions
+  // Check if already authenticated via HTTP-only cookie on mount
   useEffect(() => {
-    if (sessionStorage.getItem("admin_authed") === "true") setAuthed(true);
+    fetch("/api/admin/verify", { method: "GET" })
+      .then((res) => {
+        if (res.ok) setAuthed(true);
+      })
+      .catch(() => {});
   }, []);
 
   // Open via keyboard shortcut (Ctrl+Shift+A) or URL hash.
@@ -131,27 +135,41 @@ export function AdminPanel({ inline = false }: { inline?: boolean }) {
       }
     };
     window.addEventListener("keydown", onKey);
-    // Also check hash on load
     if (window.location.hash === "#admin") setOpen(true);
     return () => window.removeEventListener("keydown", onKey);
   }, [inline]);
 
-  const handlePinSubmit = (e: React.FormEvent) => {
+  const handlePinSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (pinInput === ADMIN_PIN) {
-      setAuthed(true);
-      setPinError(false);
-      setPinInput("");
-      sessionStorage.setItem("admin_authed", "true");
-    } else {
+    if (!pinInput.trim()) return;
+    setPinVerifying(true);
+    setPinError(false);
+    try {
+      const res = await fetch("/api/admin/verify", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ pin: pinInput.trim() }),
+      });
+      if (res.ok) {
+        setAuthed(true);
+        setPinInput("");
+      } else {
+        setPinError(true);
+        setPinInput("");
+      }
+    } catch {
       setPinError(true);
       setPinInput("");
+    } finally {
+      setPinVerifying(false);
     }
   };
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
+    try {
+      await fetch("/api/admin/logout", { method: "POST" });
+    } catch {}
     setAuthed(false);
-    sessionStorage.removeItem("admin_authed");
     setOpen(false);
   };
 
@@ -469,11 +487,18 @@ export function AdminPanel({ inline = false }: { inline?: boolean }) {
                   Incorrect PIN. Please try again.
                 </p>
               )}
-              <Button type="submit" className="w-full gap-2" disabled={pinInput.length < 4}>
-                Unlock Dashboard
+              <Button type="submit" className="w-full gap-2" disabled={pinInput.length < 1 || pinVerifying}>
+                {pinVerifying ? (
+                  <>
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                    Verifying...
+                  </>
+                ) : (
+                  "Unlock Dashboard"
+                )}
               </Button>
               <p className="text-center text-[11px] text-muted-foreground">
-                Demo PIN: <span className="font-mono font-semibold text-foreground/70">1234</span>
+                Enter the admin PIN to access the dashboard.
               </p>
             </form>
           </div>

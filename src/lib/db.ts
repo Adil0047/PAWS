@@ -1,43 +1,25 @@
 import { PrismaClient } from '@prisma/client'
 
+/**
+ * Production-ready Prisma client for Vercel serverless.
+ *
+ * In development, we cache the client on `globalThis` to avoid
+ * creating new connections on every hot-reload.
+ *
+ * In production (Vercel), each serverless function invocation
+ * may create a new client, but Prisma handles connection pooling
+ * internally. The global cache prevents connection exhaustion
+ * during development only.
+ */
+
 const globalForPrisma = globalThis as unknown as {
   prisma: PrismaClient | undefined
-  prismaSchemaVersion?: string
-}
-
-// Bump this version whenever the Prisma schema changes. The global cache
-// stores the version of the client that was instantiated; if it doesn't
-// match, we discard the stale client and create a fresh one. This lets
-// schema changes take effect without a full dev server restart.
-const SCHEMA_VERSION = 'v5-referral'
-
-let cached = globalForPrisma.prisma
-if (cached && globalForPrisma.prismaSchemaVersion !== SCHEMA_VERSION) {
-  // Stale client from a previous schema version — discard it.
-  try {
-    void cached.$disconnect?.()
-  } catch {}
-  cached = undefined
-  globalForPrisma.prisma = undefined
-}
-
-// Also probe for a recently-added model as a safety net.
-if (cached) {
-  const probe = cached as unknown as { chatSession?: unknown; order?: { create?: unknown } }
-  if (typeof probe.chatSession === 'undefined') {
-    try {
-      void cached.$disconnect?.()
-    } catch {}
-    cached = undefined
-    globalForPrisma.prisma = undefined
-  }
 }
 
 export const db =
-  cached ??
+  globalForPrisma.prisma ??
   new PrismaClient({
-    log: ['query'],
+    log: process.env.NODE_ENV === 'development' ? ['query', 'error', 'warn'] : ['error'],
   })
 
-globalForPrisma.prisma = db
-globalForPrisma.prismaSchemaVersion = SCHEMA_VERSION
+if (process.env.NODE_ENV !== 'production') globalForPrisma.prisma = db

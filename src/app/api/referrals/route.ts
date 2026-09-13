@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/db";
+import { isAdminAuthed } from "@/lib/auth";
 
 function generateReferralCode(name: string): string {
   const prefix = name.replace(/[^a-zA-Z]/g, "").slice(0, 4).toUpperCase() || "REF";
@@ -72,6 +73,10 @@ export async function GET(req: NextRequest) {
       return NextResponse.json({ referral });
     }
 
+    // List all referrals — admin-only
+    if (!isAdminAuthed(req.headers.get("cookie"))) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
     const referrals = await (db as unknown as {
       referral?: { findMany: (args: unknown) => Promise<unknown[]> };
     }).referral?.findMany({

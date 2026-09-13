@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/db";
+import { isAdminAuthed } from "@/lib/auth";
 
 export async function POST(req: NextRequest) {
   try {
@@ -38,7 +39,11 @@ export async function POST(req: NextRequest) {
   }
 }
 
-export async function GET() {
+export async function GET(req: NextRequest) {
+  // Admin-only: list all orders
+  if (!isAdminAuthed(req.headers.get("cookie"))) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
   try {
     const orders = await db.order.findMany({
       orderBy: { createdAt: "desc" },

@@ -62,65 +62,11 @@ export default function HowItWorksPage() {
   return (
     <>
       {/* ===================== HERO ===================== */}
-      <section className="shine-sweep-auto relative overflow-hidden border-b border-border paws-hero-mesh text-white">
-        {/* Decorative floating shapes */}
-        <div className="pointer-events-none absolute inset-0 opacity-70" aria-hidden="true">
-          <div className="absolute -left-20 top-0 h-64 w-64 animate-float rounded-full bg-teal-400/20 blur-3xl" />
-          <div className="absolute right-0 bottom-0 h-72 w-72 animate-float-medium rounded-full bg-cyan-300/10 blur-3xl" />
-          <div
-            className="absolute right-[20%] top-[22%] h-12 w-12 animate-float-slow rounded-xl border border-teal-300/30 bg-teal-300/5"
-            style={{ transform: "rotate(15deg)" }}
-          />
-          <div className="absolute left-[14%] bottom-[22%] h-8 w-8 animate-spin-slow rounded-full border-2 border-dashed border-cyan-300/30" />
-          <div
-            className="absolute right-[40%] top-[14%] h-6 w-6 animate-float rounded-md bg-gradient-to-br from-teal-300/40 to-cyan-300/20"
-            style={{ transform: "rotate(45deg)" }}
-          />
-        </div>
-        <div className="relative mx-auto max-w-7xl px-4 py-14 sm:py-20">
-          <Badge
-            variant="outline"
-            className="mb-4 border-white/20 bg-white/5 text-teal-100"
-          >
-            <Sparkles className="mr-1 h-3 w-3" />
-            {brand.shortName} · Onboarding Process
-          </Badge>
-          <h1 className="text-balance text-4xl font-bold tracking-tight sm:text-5xl">
-            <span className="bg-gradient-to-r from-white via-teal-100 to-teal-200 bg-clip-text text-transparent">
-              How It Works
-            </span>
-          </h1>
-          <p className="mt-4 max-w-3xl text-sm text-blue-100/85 sm:text-base">
-            From first brief to final delivery — a transparent 4-step process. Share
-            your research topic, objectives, and dataset; receive an itemized quote;
-            review a watermarked draft; then collect your editable final deliverables.
-          </p>
-          <div className="mt-6 flex flex-wrap gap-3">
-            <Button asChild className="gap-2 bg-teal-400 text-[#0a1f3d] hover:bg-teal-300 hover:text-[#0a1f3d]">
-              <Link href="/order">
-                <MessageSquare className="h-4 w-4" />
-                Request a Quote
-              </Link>
-            </Button>
-            <Button
-              asChild
-              variant="outline"
-              className="gap-2 border-white/30 bg-white/5 text-white hover:bg-white/10 hover:text-white"
-            >
-              <Link href="/pricing">View Pricing</Link>
-            </Button>
-          </div>
-        </div>
+      <section className="relative overflow-hidden border-b border-border bg-gradient-to-br from-[#0a1f3d] via-[#0e2a52] to-[#0c3b5a] text-white">
       </section>
 
       {/* ===================== 4-STEP ONBOARDING ===================== */}
-      <section className="relative overflow-hidden bg-dots bg-background">
-        {/* Decorative gradient blob */}
-        <div
-          className="pointer-events-none absolute -right-24 top-1/4 h-72 w-72 rounded-full bg-teal-500/5 blur-3xl"
-          aria-hidden="true"
-        />
-        <div className="relative mx-auto max-w-7xl px-4 py-14 sm:py-16">
+      <section className="relative overflow-hidden bg-dots bg-background"><div className="relative mx-auto max-w-7xl px-4 py-14 sm:py-16">
           <div className="mx-auto max-w-2xl text-center">
             <Badge variant="secondary" className="mb-3">
               <Sparkles className="mr-1 h-3 w-3" />
@@ -349,16 +295,7 @@ export default function HowItWorksPage() {
       </section>
 
       {/* ===================== FINAL CTA ===================== */}
-      <section className="relative overflow-hidden animated-mesh text-white">
-        <div className="pointer-events-none absolute inset-0 opacity-60" aria-hidden="true">
-          <div className="absolute -right-20 top-0 h-72 w-72 animate-float rounded-full bg-teal-400/20 blur-3xl" />
-          <div className="absolute -left-20 bottom-0 h-72 w-72 animate-float-medium rounded-full bg-cyan-300/10 blur-3xl" />
-          <div
-            className="absolute right-[25%] top-[24%] h-12 w-12 animate-float-slow rounded-xl border border-teal-300/30 bg-teal-300/5"
-            style={{ transform: "rotate(15deg)" }}
-          />
-          <div className="absolute left-[18%] bottom-[22%] h-8 w-8 animate-spin-slow rounded-full border-2 border-dashed border-cyan-300/30" />
-        </div>
+      <section className="relative overflow-hidden bg-gradient-to-br from-[#0a1f3d] via-[#0e2a52] to-[#0c3b5a] text-white">
         <div className="relative mx-auto max-w-5xl px-4 py-16 text-center sm:py-20">
           <h2 className="text-balance text-3xl font-bold tracking-tight sm:text-4xl">
             Start Step 01 Today

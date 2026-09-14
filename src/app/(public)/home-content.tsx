@@ -88,42 +88,8 @@ export default function HomeContent() {
   return (
     <>
       {/* ===================== HERO ===================== */}
-      <section className="shine-sweep-auto relative overflow-hidden paws-hero-mesh text-white">
-        {/* Decorative animated glow blobs */}
-        <div className="pointer-events-none absolute inset-0 opacity-70" aria-hidden="true">
-          <div className="absolute -left-24 top-0 h-80 w-80 animate-float rounded-full bg-teal-400/20 blur-3xl" />
-          <div
-            className="absolute right-0 top-1/3 h-96 w-96 animate-float-medium rounded-full bg-cyan-300/10 blur-3xl"
-          />
-          <div
-            className="absolute bottom-0 left-1/3 h-80 w-80 animate-float-slow rounded-full bg-blue-400/10 blur-3xl"
-          />
-          {/* Geometric decorative shapes */}
-          <div
-            className="absolute right-[12%] top-[18%] h-16 w-16 animate-float-slow rounded-2xl border border-teal-300/30 bg-teal-300/5"
-            style={{ transform: "rotate(15deg)" }}
-          />
-          <div
-            className="absolute left-[8%] bottom-[20%] h-12 w-12 animate-float-medium rounded-full border border-cyan-300/40"
-          />
-          <div
-            className="absolute right-[30%] bottom-[14%] h-10 w-10 animate-spin-slow rounded-full border-2 border-dashed border-teal-300/30"
-          />
-          <div
-            className="absolute left-[40%] top-[12%] h-8 w-8 animate-float rounded-md bg-gradient-to-br from-teal-300/40 to-cyan-300/20"
-            style={{ transform: "rotate(45deg)" }}
-          />
-        </div>
-        {/* Subtle academic grid overlay */}
-        <div
-          className="pointer-events-none absolute inset-0 opacity-[0.06]"
-          aria-hidden="true"
-          style={{
-            backgroundImage:
-              "linear-gradient(rgba(255,255,255,0.6) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.6) 1px, transparent 1px)",
-            backgroundSize: "40px 40px",
-          }}
-        />
+      <section className="relative overflow-hidden bg-gradient-to-br from-[#0a1f3d] via-[#0e2a52] to-[#0c3b5a] text-white">
+        {/* Clean gradient overlay — no grid, no floating shapes */}
 
         <div className="relative mx-auto max-w-7xl px-4 py-16 sm:py-20 lg:py-24">
           <div className="grid items-center gap-10 lg:grid-cols-[1.15fr_0.85fr]">
@@ -149,18 +115,19 @@ export default function HomeContent() {
               </div>
 
               <h1 className="mt-6 text-balance text-4xl font-bold leading-[1.1] tracking-tight sm:text-5xl lg:text-6xl">
-                Publication-Grade Research
-                <span className="block bg-gradient-to-r from-teal-300 via-cyan-200 to-teal-300 bg-clip-text text-transparent drop-shadow-[0_2px_20px_rgba(45,212,191,0.25)]">
-                  Manuscripts &amp; Biostatistics
+                Professional Academic
+                <span className="block bg-gradient-to-r from-teal-300 via-cyan-200 to-teal-300 bg-clip-text text-transparent">
+                  Writing Services
                 </span>
               </h1>
 
-              <p className="mt-5 text-base font-medium text-teal-100/90 sm:text-lg">
-                {brand.tagline}
+              <p className="mt-4 text-lg font-semibold text-teal-200">
+                Your Success, Our Priority
               </p>
 
-              <p className="mx-auto mt-5 max-w-2xl text-sm leading-relaxed text-blue-100/80 sm:text-base lg:mx-0">
-                {brand.description}
+              <p className="mx-auto mt-4 max-w-2xl text-sm leading-relaxed text-blue-100/80 sm:text-base lg:mx-0">
+                Get high-quality, original, and well-researched academic papers. We help students
+                and researchers achieve their goals with professional, confidential writing services.
               </p>
 
               <div className="mt-8 flex flex-col items-center gap-3 sm:flex-row sm:justify-center lg:justify-start">
@@ -207,13 +174,11 @@ export default function HomeContent() {
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.6, delay: 0.2 }}
               className="relative mx-auto w-full max-w-md lg:mx-0"
-            >
-              {/* Floating glow ring behind card */}
-              <div
+            ><div
                 className="pointer-events-none absolute -inset-6 -z-10 rounded-full bg-gradient-to-br from-teal-400/20 via-cyan-300/10 to-transparent blur-2xl"
                 aria-hidden="true"
               />
-              <div className="shine-sweep glass-card rounded-2xl p-6 shadow-2xl">
+              <div className="glass-card rounded-2xl p-6 shadow-2xl">
                 <div className="flex items-center gap-3">
                   <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-teal-400/20 ring-1 ring-teal-300/30">
                     <ShieldCheck className="h-6 w-6 text-teal-300" />
@@ -280,13 +245,7 @@ export default function HomeContent() {
       </section>
 
       {/* ===================== SHORT INTRODUCTION ===================== */}
-      <section className="relative overflow-hidden border-b border-border bg-dots bg-background">
-        {/* Decorative gradient blob */}
-        <div
-          className="pointer-events-none absolute -right-20 top-1/4 h-72 w-72 rounded-full bg-teal-500/5 blur-3xl"
-          aria-hidden="true"
-        />
-        <div className="relative mx-auto max-w-7xl px-4 py-14 sm:py-16">
+      <section className="relative overflow-hidden border-b border-border bg-dots bg-background"><div className="relative mx-auto max-w-7xl px-4 py-14 sm:py-16">
           <div className="grid gap-8 lg:grid-cols-[1.4fr_1fr] lg:items-center">
             <div>
               <Badge variant="secondary" className="mb-3">
@@ -534,21 +493,7 @@ export default function HomeContent() {
       </section>
 
       {/* ===================== FINAL CTA ===================== */}
-      <section className="relative overflow-hidden animated-mesh text-white">
-        {/* Floating decorative shapes */}
-        <div className="pointer-events-none absolute inset-0 opacity-60" aria-hidden="true">
-          <div className="absolute -right-20 top-0 h-72 w-72 animate-float rounded-full bg-teal-400/20 blur-3xl" />
-          <div className="absolute -left-20 bottom-0 h-72 w-72 animate-float-medium rounded-full bg-cyan-300/10 blur-3xl" />
-          <div
-            className="absolute right-[20%] top-[20%] h-16 w-16 animate-float-slow rounded-2xl border border-teal-300/30 bg-teal-300/5"
-            style={{ transform: "rotate(15deg)" }}
-          />
-          <div className="absolute left-[15%] top-[60%] h-10 w-10 animate-spin-slow rounded-full border-2 border-dashed border-cyan-300/30" />
-          <div
-            className="absolute right-[35%] bottom-[18%] h-8 w-8 animate-float rounded-md bg-gradient-to-br from-teal-300/40 to-cyan-300/20"
-            style={{ transform: "rotate(45deg)" }}
-          />
-        </div>
+      <section className="relative overflow-hidden bg-gradient-to-br from-[#0a1f3d] via-[#0e2a52] to-[#0c3b5a] text-white">
         <div className="relative mx-auto max-w-5xl px-4 py-16 text-center sm:py-20">
           <h2 className="text-balance text-3xl font-bold tracking-tight sm:text-4xl">
             Ready to Publish or Analyze Your Research?

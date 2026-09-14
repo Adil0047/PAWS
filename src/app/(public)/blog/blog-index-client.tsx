@@ -34,19 +34,6 @@ export function BlogIndexClient({ posts }: { posts: PostSummary[] }) {
     <>
       {/* ===================== HERO ===================== */}
       <section className="relative overflow-hidden border-b border-border bg-gradient-to-br from-[#0a1f3d] via-[#0e2a52] to-[#0c3b5a] text-white">
-        <div className="pointer-events-none absolute inset-0 opacity-50" aria-hidden="true">
-          <div className="absolute -left-20 top-0 h-64 w-64 rounded-full bg-teal-400/20 blur-3xl" />
-          <div className="absolute right-0 bottom-0 h-72 w-72 rounded-full bg-cyan-300/10 blur-3xl" />
-        </div>
-        <div
-          className="pointer-events-none absolute inset-0 opacity-[0.06]"
-          aria-hidden="true"
-          style={{
-            backgroundImage:
-              "linear-gradient(rgba(255,255,255,0.6) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.6) 1px, transparent 1px)",
-            backgroundSize: "40px 40px",
-          }}
-        />
         <div className="relative mx-auto max-w-7xl px-4 py-14 sm:py-20">
           <nav
             aria-label="Breadcrumb"
@@ -209,10 +196,6 @@ export function BlogIndexClient({ posts }: { posts: PostSummary[] }) {
 
       {/* ===================== CTA ===================== */}
       <section className="relative overflow-hidden bg-gradient-to-br from-[#0a1f3d] via-[#0e2a52] to-[#0c3b5a] text-white">
-        <div className="pointer-events-none absolute inset-0 opacity-50" aria-hidden="true">
-          <div className="absolute -right-20 top-0 h-72 w-72 rounded-full bg-teal-400/20 blur-3xl" />
-          <div className="absolute -left-20 bottom-0 h-72 w-72 rounded-full bg-cyan-300/10 blur-3xl" />
-        </div>
         <div className="relative mx-auto max-w-5xl px-4 py-16 text-center sm:py-20">
           <h2 className="text-balance text-2xl font-bold tracking-tight sm:text-3xl lg:text-4xl">
             Need hands-on help with your manuscript?

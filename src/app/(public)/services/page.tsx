@@ -80,52 +80,7 @@ export default function ServicesIndexPage() {
   return (
     <>
       {/* ===================== PAGE HEADER ===================== */}
-      <section className="shine-sweep-auto relative overflow-hidden border-b border-border paws-hero-mesh text-white">
-        {/* Decorative floating shapes */}
-        <div className="pointer-events-none absolute inset-0 opacity-70" aria-hidden="true">
-          <div className="absolute -left-20 top-0 h-64 w-64 animate-float rounded-full bg-teal-400/20 blur-3xl" />
-          <div className="absolute right-0 bottom-0 h-72 w-72 animate-float-medium rounded-full bg-cyan-300/10 blur-3xl" />
-          <div
-            className="absolute right-[20%] top-[26%] h-12 w-12 animate-float-slow rounded-xl border border-teal-300/30 bg-teal-300/5"
-            style={{ transform: "rotate(15deg)" }}
-          />
-          <div className="absolute left-[14%] bottom-[22%] h-8 w-8 animate-spin-slow rounded-full border-2 border-dashed border-cyan-300/30" />
-        </div>
-        <div className="relative mx-auto max-w-7xl px-4 py-14 sm:py-20">
-          <Badge
-            variant="outline"
-            className="mb-4 border-white/20 bg-white/5 text-teal-100"
-          >
-            <Sparkles className="mr-1 h-3 w-3" />
-            {brand.shortName} Service Catalogue
-          </Badge>
-          <h1 className="text-balance text-4xl font-bold tracking-tight sm:text-5xl">
-            <span className="bg-gradient-to-r from-white via-teal-100 to-teal-200 bg-clip-text text-transparent">
-              Our Services
-            </span>
-          </h1>
-          <p className="mt-4 max-w-3xl text-sm text-blue-100/85 sm:text-base">
-            {brand.tagline}
-          </p>
-          <p className="mt-3 max-w-3xl text-sm text-blue-100/70">
-            {brand.description}
-          </p>
-          <div className="mt-6 flex flex-wrap gap-3">
-            <Button asChild className="gap-2 bg-teal-400 text-[#0a1f3d] hover:bg-teal-300 hover:text-[#0a1f3d]">
-              <Link href="/order">
-                <MessageSquare className="h-4 w-4" />
-                Request a Quote
-              </Link>
-            </Button>
-            <Button
-              asChild
-              variant="outline"
-              className="gap-2 border-white/30 bg-white/5 text-white hover:bg-white/10 hover:text-white"
-            >
-              <Link href="/#how-it-works">How It Works</Link>
-            </Button>
-          </div>
-        </div>
+      <section className="relative overflow-hidden border-b border-border bg-gradient-to-br from-[#0a1f3d] via-[#0e2a52] to-[#0c3b5a] text-white">
       </section>
 
       {/* ===================== CATEGORY SECTIONS ===================== */}
@@ -226,10 +181,6 @@ export default function ServicesIndexPage() {
 
       {/* ===================== CTA STRIP ===================== */}
       <section className="relative overflow-hidden border-t border-border bg-gradient-to-br from-[#0a1f3d] via-[#0e2a52] to-[#0c3b5a] text-white">
-        <div className="pointer-events-none absolute inset-0 opacity-60" aria-hidden="true">
-          <div className="absolute -right-16 top-0 h-56 w-56 animate-float rounded-full bg-teal-400/20 blur-3xl" />
-          <div className="absolute -left-16 bottom-0 h-56 w-56 animate-float-medium rounded-full bg-cyan-300/10 blur-3xl" />
-        </div>
         <div className="relative mx-auto flex max-w-7xl flex-col items-center justify-between gap-4 px-4 py-10 text-center sm:flex-row sm:text-left">
           <div>
             <h2 className="text-xl font-bold tracking-tight sm:text-2xl">

@@ -336,7 +336,7 @@ export function LiveChatWidget() {
 
                 {/* Quick actions */}
                 <div className="flex flex-wrap gap-1.5 border-t border-border bg-card px-3 py-2">
-                  {["Services", "Pricing", "Turnitin"].map((q) => (
+                  {["Services", "Pricing", "Turnitin", "Process"].map((q) => (
                     <button
                       key={q}
                       onClick={() => sendQuickReply(q)}
@@ -345,6 +345,13 @@ export function LiveChatWidget() {
                       {q}
                     </button>
                   ))}
+                  <a
+                    href="/track-order"
+                    onClick={() => setIsOpen(false)}
+                    className="rounded-full border border-border bg-secondary px-2.5 py-1 text-[11px] font-medium text-foreground/80 transition-colors hover:bg-primary hover:text-primary-foreground"
+                  >
+                    ✓ Order Status
+                  </a>
                   <a
                     href="/order"
                     onClick={() => setIsOpen(false)}

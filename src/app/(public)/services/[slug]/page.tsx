@@ -93,10 +93,6 @@ export default async function ServiceDetailPage({
     <>
       {/* ===================== HEADER ===================== */}
       <section className="relative overflow-hidden border-b border-border bg-gradient-to-br from-[#0a1f3d] via-[#0e2a52] to-[#0c3b5a] text-white">
-        <div className="pointer-events-none absolute inset-0 opacity-50" aria-hidden="true">
-          <div className="absolute -left-20 top-0 h-64 w-64 rounded-full bg-teal-400/20 blur-3xl" />
-          <div className="absolute right-0 bottom-0 h-72 w-72 rounded-full bg-cyan-300/10 blur-3xl" />
-        </div>
 
         <div className="relative mx-auto max-w-7xl px-4 py-12 sm:py-16">
           {/* Breadcrumb */}

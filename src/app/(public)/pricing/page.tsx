@@ -137,9 +137,9 @@ export default function PricingPage() {
                 <Sparkles className="mr-1 h-3 w-3" />
                 Budget Estimator
               </Badge>
-              <h2 className="text-balance text-2xl font-bold tracking-tight sm:text-3xl">
+              <h1 className="text-balance text-2xl font-bold tracking-tight sm:text-3xl">
                 Estimate Your Project Budget
-              </h2>
+              </h1>
               <p className="mt-3 text-sm text-muted-foreground sm:text-base">
                 Select a service to instantly see the official PAWS rate, pricing
                 basis, and turnaround time. All prices are in PKR and come directly
@@ -316,7 +316,12 @@ export default function PricingPage() {
                             </Badge>
                           </div>
                           <CardTitle className="mt-3 text-base leading-snug">
-                            {service.title}
+                            <Link
+                              href={`/services/${service.slug}`}
+                              className="underline-offset-2 hover:text-primary hover:underline"
+                            >
+                              {service.title}
+                            </Link>
                           </CardTitle>
                           <CardDescription className="text-xs leading-relaxed">
                             {service.shortDescription}
@@ -324,14 +329,14 @@ export default function PricingPage() {
                         </CardHeader>
                         <CardContent className="pt-0">
                           <div className="rounded-lg border border-border bg-secondary/40 px-3 py-2">
-                            <div className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
+                            <div className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
                               Scope
                             </div>
                             <ul className="mt-2 space-y-1">
                               {service.scope.map((item) => (
                                 <li
                                   key={item}
-                                  className="flex items-start gap-2 text-xs text-foreground/90"
+                                  className="flex items-start gap-2 text-xs text-foreground"
                                 >
                                   <CheckCircle2 className="mt-0.5 h-3 w-3 shrink-0 text-primary" />
                                   <span>{item}</span>
@@ -342,7 +347,7 @@ export default function PricingPage() {
                           <Separator className="my-3" />
                           <div className="flex items-end justify-between gap-2">
                             <div>
-                              <div className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
+                              <div className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
                                 Price (PKR)
                               </div>
                               <div className="text-sm font-bold text-primary">
@@ -433,7 +438,7 @@ export default function PricingPage() {
                 >
                   <MessageSquare className="h-4 w-4 text-primary" />
                   <div>
-                    <div className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
+                    <div className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
                       WhatsApp
                     </div>
                     <div className="text-sm font-semibold text-foreground">
@@ -447,7 +452,7 @@ export default function PricingPage() {
                 >
                   <Mail className="h-4 w-4 text-primary" />
                   <div>
-                    <div className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
+                    <div className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
                       Email
                     </div>
                     <div className="text-sm font-semibold text-foreground">
@@ -489,7 +494,7 @@ export default function PricingPage() {
               WhatsApp: {contactInfo.whatsapp}
             </a>
           </div>
-          <p className="mt-6 text-xs text-blue-100/60">
+          <p className="mt-6 text-xs text-blue-100/80">
             Payments: {contactInfo.payments} · {contactInfo.businessHours} availability
           </p>
         </div>
@@ -510,9 +515,12 @@ function PricingTableRow({ service }: { service: Service }) {
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <span className="text-sm font-semibold text-foreground">
+              <Link
+                href={`/services/${service.slug}`}
+                className="text-sm font-semibold text-foreground underline-offset-2 decoration-primary/40 hover:text-primary hover:decoration-primary hover:underline"
+              >
                 {service.title}
-              </span>
+              </Link>
               {isPopular ? (
                 <Badge className="gap-1 bg-gradient-to-r from-primary to-accent px-1.5 py-0 text-[10px] font-bold uppercase tracking-wider text-white">
                   <Star className="h-2.5 w-2.5 fill-current" />
@@ -534,7 +542,7 @@ function PricingTableRow({ service }: { service: Service }) {
           {service.scope.map((item) => (
             <li
               key={item}
-              className="flex items-center gap-1.5 text-xs text-foreground/85"
+              className="flex items-center gap-1.5 text-xs text-foreground"
             >
               <CheckCircle2 className="h-3 w-3 shrink-0 text-primary" />
               <span>{item}</span>

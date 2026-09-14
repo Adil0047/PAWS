@@ -302,7 +302,7 @@ export function OrderPageClient() {
                             <span className="font-medium">
                               {service.title}
                             </span>
-                            <span className="text-[11px] text-muted-foreground">
+                            <span className="text-xs text-muted-foreground">
                               {service.category} · {service.priceLabel}
                             </span>
                           </span>
@@ -337,7 +337,7 @@ export function OrderPageClient() {
                         </p>
                       </div>
                       <div className="shrink-0 rounded-lg bg-primary/5 px-4 py-3 text-right">
-                        <div className="text-[10px] font-medium uppercase tracking-wide text-muted-foreground">
+                        <div className="text-[11px] font-medium uppercase tracking-wide text-muted-foreground">
                           {isMernCustom ? "Pricing" : "Official Rate"}
                         </div>
                         <div
@@ -352,7 +352,7 @@ export function OrderPageClient() {
                     </div>
                     {selectedService.pricingNote && (
                       <div className="border-t border-border bg-secondary/30 px-4 py-2.5">
-                        <p className="text-[11px] leading-relaxed text-muted-foreground">
+                        <p className="text-xs leading-relaxed text-muted-foreground">
                           <span className="font-semibold text-foreground">
                             Note:
                           </span>{" "}
@@ -464,7 +464,7 @@ export function OrderPageClient() {
                       placeholder="Share your research topic, objectives, target journal (if any), dataset details, word count expectations, and any specific requirements..."
                       className="resize-none"
                     />
-                    <p className="text-[11px] text-muted-foreground">
+                    <p className="text-xs text-muted-foreground">
                       {form.message.length} characters · Minimum 20 characters recommended
                     </p>
                   </div>
@@ -485,7 +485,7 @@ export function OrderPageClient() {
                   </div>
 
                   <div className="flex flex-col-reverse gap-3 sm:flex-row sm:items-center sm:justify-between">
-                    <p className="text-[11px] text-muted-foreground">
+                    <p className="text-xs text-muted-foreground">
                       Payments via{" "}
                       <span className="font-semibold text-foreground">
                         {contactInfo.payments}
@@ -542,7 +542,7 @@ export function OrderPageClient() {
                         </Badge>
                       ))}
                   </div>
-                  <p className="mt-2 text-[11px] text-muted-foreground">
+                  <p className="mt-2 text-xs text-muted-foreground">
                     50% advance to confirm; balance on final delivery.
                   </p>
                 </CardContent>
@@ -566,7 +566,7 @@ export function OrderPageClient() {
                   >
                     {contactInfo.whatsapp}
                   </a>
-                  <p className="mt-1 text-[11px] text-muted-foreground">
+                  <p className="mt-1 text-xs text-muted-foreground">
                     Fastest channel for quick quotes &amp; file sharing.
                   </p>
                 </CardContent>
@@ -588,7 +588,7 @@ export function OrderPageClient() {
                   >
                     {contactInfo.email}
                   </a>
-                  <p className="mt-1 text-[11px] text-muted-foreground">
+                  <p className="mt-1 text-xs text-muted-foreground">
                     For long briefs &amp; formal correspondence.
                   </p>
                 </CardContent>
@@ -628,7 +628,7 @@ export function OrderPageClient() {
               <Link href="/services">Browse All Services</Link>
             </Button>
           </div>
-          <p className="mt-6 text-xs text-blue-100/60">
+          <p className="mt-6 text-xs text-blue-100/80">
             WhatsApp: {contactInfo.whatsapp} · Email: {contactInfo.email} ·{" "}
             {contactInfo.businessHours} availability
           </p>

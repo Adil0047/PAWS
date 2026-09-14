@@ -350,7 +350,7 @@ export function ContactPageClient() {
                       placeholder="Share your research topic, objectives, target journal, deadline, and any specific requirements..."
                       className="resize-none"
                     />
-                    <p className="text-[11px] text-muted-foreground">
+                    <p className="text-xs text-muted-foreground">
                       {form.message.length} characters · Minimum 20 characters recommended
                     </p>
                   </div>
@@ -358,7 +358,7 @@ export function ContactPageClient() {
                   <Separator />
 
                   <div className="flex flex-col-reverse gap-3 sm:flex-row sm:items-center sm:justify-between">
-                    <p className="text-[11px] text-muted-foreground">
+                    <p className="text-xs text-muted-foreground">
                       By submitting you agree to {brand.shortName}&apos;s
                       non-disclosure handling.
                     </p>
@@ -442,7 +442,7 @@ export function ContactPageClient() {
               <Link href="/services">Browse Services</Link>
             </Button>
           </div>
-          <p className="mt-6 text-xs text-blue-100/60">
+          <p className="mt-6 text-xs text-blue-100/80">
             WhatsApp: {contactInfo.whatsapp} · Email: {contactInfo.email} ·{" "}
             {contactInfo.payments} · {contactInfo.businessHours} availability
           </p>

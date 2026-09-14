@@ -28,7 +28,19 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
-import { brand, services, categoryDescriptions } from "@/lib/site-data";
+import Image from "next/image";
+import {
+  brand,
+  services,
+  categoryDescriptions,
+  blogPosts,
+  serviceBlogLinks,
+} from "@/lib/site-data";
+import {
+  JsonLd,
+  buildServiceSchema,
+  buildBreadcrumbListSchema,
+} from "@/components/site/structured-data";
 
 const iconMap: Record<string, LucideIcon> = {
   FileText,
@@ -63,6 +75,9 @@ export function generateMetadata({ params }: { params: Promise<Params> }): Promi
     return {
       title: service.title,
       description: service.shortDescription,
+      alternates: {
+        canonical: `/services/${service.slug}`,
+      },
       openGraph: {
         title: `${service.title} | ${brand.shortName}`,
         description: service.shortDescription,
@@ -89,8 +104,34 @@ export default async function ServiceDetailPage({
     (s) => s.category === service.category && s.slug !== service.slug
   );
 
+  // Related blog articles — based on the explicit serviceBlogLinks mapping
+  // (reverse of blogServiceLinks) in site-data.ts. Only articles that
+  // genuinely cover this service's topic are shown.
+  const relatedBlogSlugs = serviceBlogLinks[service.slug] ?? [];
+  const relatedArticles = relatedBlogSlugs
+    .map((bSlug) => blogPosts.find((p) => p.slug === bSlug))
+    .filter((p): p is (typeof blogPosts)[number] => Boolean(p));
+
+  // Page-specific structured data: individual Service + BreadcrumbList.
+  const serviceSchema = buildServiceSchema({
+    slug: service.slug,
+    title: service.title,
+    shortDescription: service.shortDescription,
+    priceLabel: service.priceLabel,
+    priceMin: service.priceMin,
+    priceMax: service.priceMax,
+    pricingBasis: service.pricingBasis,
+  });
+  const breadcrumbSchema = buildBreadcrumbListSchema([
+    { name: "Home", url: "/" },
+    { name: "Services", url: "/services" },
+    { name: service.title, url: `/services/${service.slug}` },
+  ]);
+
   return (
     <>
+      <JsonLd schema={serviceSchema} />
+      <JsonLd schema={breadcrumbSchema} />
       {/* ===================== HEADER ===================== */}
       <section className="relative overflow-hidden border-b border-border bg-gradient-to-br from-[#0a1f3d] via-[#0e2a52] to-[#0c3b5a] text-white">
 
@@ -98,7 +139,7 @@ export default async function ServiceDetailPage({
           {/* Breadcrumb */}
           <nav
             aria-label="Breadcrumb"
-            className="mb-6 flex items-center gap-2 text-xs text-blue-100/70"
+            className="mb-6 flex items-center gap-2 text-xs text-blue-100/85"
           >
             <Link href="/" className="hover:text-white">
               Home
@@ -147,12 +188,12 @@ export default async function ServiceDetailPage({
 
             {/* Quick action card */}
             <div className="rounded-2xl border border-white/15 bg-white/[0.07] p-5 backdrop-blur-md">
-              <div className="text-[10px] font-semibold uppercase tracking-wider text-blue-100/60">
+              <div className="text-[11px] font-semibold uppercase tracking-wider text-blue-100/80">
                 Pricing
               </div>
               <div className="mt-1 text-xl font-bold text-white">{service.priceLabel}</div>
               {service.pricingNote && (
-                <p className="mt-2 text-xs text-blue-100/70">{service.pricingNote}</p>
+                <p className="mt-2 text-xs text-blue-100/85">{service.pricingNote}</p>
               )}
               <Button
                 asChild
@@ -165,7 +206,7 @@ export default async function ServiceDetailPage({
               </Button>
               <Link
                 href="/services"
-                className="mt-3 flex items-center justify-center gap-1 text-xs text-blue-100/70 hover:text-white"
+                className="mt-3 flex items-center justify-center gap-1 text-xs text-blue-100/85 hover:text-white"
               >
                 <ArrowLeft className="h-3 w-3" />
                 Back to all services
@@ -288,7 +329,7 @@ export default async function ServiceDetailPage({
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div>
-                    <div className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
+                    <div className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
                       Price
                     </div>
                     <div className="mt-1 text-lg font-bold text-primary">
@@ -302,7 +343,7 @@ export default async function ServiceDetailPage({
                   </div>
                   <Separator />
                   <div>
-                    <div className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
+                    <div className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
                       Turnaround
                     </div>
                     <div className="mt-1 inline-flex items-center gap-2 text-sm font-semibold text-foreground">
@@ -312,7 +353,7 @@ export default async function ServiceDetailPage({
                   </div>
                   <Separator />
                   <div>
-                    <div className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
+                    <div className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
                       Category
                     </div>
                     <div className="mt-1 text-sm font-medium text-foreground">
@@ -407,6 +448,75 @@ export default async function ServiceDetailPage({
             </section>
           )}
 
+          {/* ===================== RELATED ARTICLES ===================== */}
+          {relatedArticles.length > 0 && (
+            <section className="mt-16 sm:mt-20">
+              <div className="flex items-end justify-between gap-4">
+                <div>
+                  <Badge variant="secondary" className="mb-2">
+                    Related Articles
+                  </Badge>
+                  <h2 className="text-balance text-2xl font-bold tracking-tight sm:text-3xl">
+                    Read more about {service.title.toLowerCase()}
+                  </h2>
+                </div>
+                <Button asChild variant="ghost" size="sm" className="gap-1">
+                  <Link href="/blog">
+                    View All
+                    <ArrowRight className="h-3.5 w-3.5" />
+                  </Link>
+                </Button>
+              </div>
+
+              <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                {relatedArticles.map((article) => (
+                  <article
+                    key={article.slug}
+                    className="group flex flex-col overflow-hidden rounded-2xl border border-border bg-card transition-all duration-300 hover:-translate-y-1 hover:shadow-lg"
+                  >
+                    <Link
+                      href={`/blog/${article.slug}`}
+                      className="relative block aspect-[16/9] overflow-hidden bg-secondary"
+                      aria-label={`Read: ${article.title}`}
+                    >
+                      <Image
+                        src={article.image}
+                        alt={article.title}
+                        fill
+                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                        className="object-cover transition-transform duration-500 group-hover:scale-105"
+                      />
+                      <div
+                        className={`absolute inset-0 bg-gradient-to-br ${article.accent} opacity-25 mix-blend-multiply`}
+                        aria-hidden="true"
+                      />
+                      <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-primary via-accent to-primary" />
+                      <Badge className="absolute left-3 top-3 gap-1 border border-white/20 bg-white/15 text-white backdrop-blur-md">
+                        {article.category}
+                      </Badge>
+                    </Link>
+                    <CardContent className="flex flex-1 flex-col p-5">
+                      <h3 className="text-base font-bold leading-snug tracking-tight text-foreground transition-colors group-hover:text-primary">
+                        <Link href={`/blog/${article.slug}`}>{article.title}</Link>
+                      </h3>
+                      <p className="mt-2 line-clamp-2 text-sm leading-relaxed text-muted-foreground">
+                        {article.excerpt}
+                      </p>
+                      <div className="mt-4 flex items-center gap-3 text-xs text-muted-foreground">
+                        <span className="inline-flex items-center gap-1">
+                          <Clock className="h-3 w-3" />
+                          {article.readTime}
+                        </span>
+                        <span aria-hidden="true">·</span>
+                        <span>{article.date}</span>
+                      </div>
+                    </CardContent>
+                  </article>
+                ))}
+              </div>
+            </section>
+          )}
+
           {/* ===================== BOTTOM CTA ===================== */}
           <section className="mt-16 overflow-hidden rounded-2xl bg-gradient-to-br from-[#0a1f3d] via-[#0e2a52] to-[#0c3b5a] p-8 text-white sm:mt-20 sm:p-10">
             <div className="flex flex-col items-center justify-between gap-6 text-center sm:flex-row sm:text-left">
@@ -428,7 +538,7 @@ export default async function ServiceDetailPage({
                 </Button>
                 <Link
                   href="/services"
-                  className="inline-flex items-center justify-center gap-1 text-xs text-blue-100/70 hover:text-white"
+                  className="inline-flex items-center justify-center gap-1 text-xs text-blue-100/85 hover:text-white"
                 >
                   <ArrowLeft className="h-3 w-3" />
                   Browse all services

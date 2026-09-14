@@ -37,7 +37,7 @@ export function BudgetCalculator() {
           </div>
           <div>
             <h3 className="text-base font-bold">Budget Estimator</h3>
-            <p className="text-xs text-blue-100/70">Official PAWS rate card pricing</p>
+            <p className="text-xs text-blue-100/85">Official PAWS rate card pricing</p>
           </div>
         </div>
       </div>
@@ -137,7 +137,7 @@ export function BudgetCalculator() {
           </Link>
         </Button>
 
-        <p className="text-center text-[11px] text-muted-foreground">
+        <p className="text-center text-xs text-muted-foreground">
           All prices in PKR. Final quote depends on project scope and requirements.
         </p>
       </div>

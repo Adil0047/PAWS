@@ -81,6 +81,24 @@ export default function ServicesIndexPage() {
     <>
       {/* ===================== PAGE HEADER ===================== */}
       <section className="relative overflow-hidden border-b border-border bg-gradient-to-br from-[#0a1f3d] via-[#0e2a52] to-[#0c3b5a] text-white">
+        <div className="relative mx-auto max-w-7xl px-4 py-14 sm:py-20">
+          <Badge
+            variant="outline"
+            className="mb-4 border-white/20 bg-white/5 text-teal-100"
+          >
+            <Sparkles className="mr-1.5 h-3.5 w-3.5" />
+            Service Catalogue
+          </Badge>
+          <h1 className="text-balance text-3xl font-bold tracking-tight sm:text-4xl lg:text-5xl">
+            Our Services
+          </h1>
+          <p className="mt-4 max-w-3xl text-sm text-blue-100/85 sm:text-base">
+            {brand.shortName} delivers manuscript writing, plagiarism &amp;
+            editorial compliance, statistical analysis (SPSS, R, Python), and
+            MERN stack web development — 12 services across four categories,
+            aligned with ICMJE, CARE, PRISMA, and HEC/CPSP standards.
+          </p>
+        </div>
       </section>
 
       {/* ===================== CATEGORY SECTIONS ===================== */}
@@ -150,7 +168,7 @@ export default function ServicesIndexPage() {
                         </CardHeader>
                         <CardContent className="flex-1">
                           <div className="rounded-lg border border-border bg-secondary/40 px-3 py-2">
-                            <div className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
+                            <div className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
                               Pricing
                             </div>
                             <div className="text-sm font-bold text-primary">

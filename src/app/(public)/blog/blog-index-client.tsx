@@ -37,7 +37,7 @@ export function BlogIndexClient({ posts }: { posts: PostSummary[] }) {
         <div className="relative mx-auto max-w-7xl px-4 py-14 sm:py-20">
           <nav
             aria-label="Breadcrumb"
-            className="mb-6 flex items-center gap-2 text-xs text-blue-100/70"
+            className="mb-6 flex items-center gap-2 text-xs text-blue-100/85"
           >
             <Link href="/" className="hover:text-white">
               Home
@@ -62,7 +62,7 @@ export function BlogIndexClient({ posts }: { posts: PostSummary[] }) {
             reports, and citation styles — written by the {brand.shortName}{" "}
             editorial team.
           </p>
-          <div className="mt-6 flex flex-wrap items-center gap-3 text-xs text-blue-100/70">
+          <div className="mt-6 flex flex-wrap items-center gap-3 text-xs text-blue-100/85">
             <span className="inline-flex items-center gap-1.5 rounded-full border border-white/15 bg-white/5 px-3 py-1.5">
               <span className="text-teal-300">●</span>
               {posts.length} articles
@@ -225,7 +225,7 @@ export function BlogIndexClient({ posts }: { posts: PostSummary[] }) {
               <Link href="/services">Browse Services</Link>
             </Button>
           </div>
-          <p className="mt-6 text-xs text-blue-100/60">
+          <p className="mt-6 text-xs text-blue-100/80">
             WhatsApp: {contactInfo.whatsapp} · Email: {contactInfo.email} ·{" "}
             {contactInfo.businessHours} availability
           </p>

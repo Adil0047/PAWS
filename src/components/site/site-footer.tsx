@@ -22,26 +22,26 @@ export function SiteFooter() {
               />
               <div className="leading-tight">
                 <div className="text-base font-bold text-foreground">{brand.shortName}</div>
-                <div className="text-[10px] font-medium uppercase tracking-wider text-muted-foreground">
+                <div className="text-[11px] font-medium uppercase tracking-wider text-muted-foreground">
                   {brand.fullName}
                 </div>
               </div>
             </div>
-            <p className="mt-4 max-w-sm text-sm text-muted-foreground">
+            <p className="mt-4 max-w-sm text-sm leading-relaxed text-muted-foreground">
               {brand.description}
             </p>
-            <div className="mt-4 space-y-1.5 text-xs text-muted-foreground">
+            <div className="mt-4 space-y-1.5 text-sm text-muted-foreground">
               <a href={`https://wa.me/${contactInfo.whatsappRaw}`} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 hover:text-primary">
-                <Phone className="h-3.5 w-3.5" /> WhatsApp: {contactInfo.whatsapp}
+                <Phone className="h-4 w-4" /> WhatsApp: {contactInfo.whatsapp}
               </a>
               <a href={`mailto:${contactInfo.email}`} className="flex items-center gap-2 hover:text-primary">
-                <Mail className="h-3.5 w-3.5" /> {contactInfo.email}
+                <Mail className="h-4 w-4" /> {contactInfo.email}
               </a>
               <div className="flex items-center gap-2">
-                <Clock className="h-3.5 w-3.5" /> {contactInfo.businessHours} availability
+                <Clock className="h-4 w-4" /> {contactInfo.businessHours} availability
               </div>
-              <div className="mt-2 text-xs">
-                <span className="font-medium text-foreground/70">Payment:</span> {contactInfo.payments}
+              <div className="mt-2 text-sm">
+                <span className="font-medium text-foreground/80">Payment:</span> {contactInfo.payments}
               </div>
             </div>
           </div>
@@ -94,7 +94,7 @@ export function SiteFooter() {
           </div>
         </div>
 
-        <div className="mt-10 flex flex-col items-center justify-between gap-3 border-t border-border pt-6 text-xs text-muted-foreground sm:flex-row">
+        <div className="mt-10 flex flex-col items-center justify-between gap-3 border-t border-border pt-6 text-sm text-muted-foreground sm:flex-row">
           <p>© {new Date().getFullYear()} {brand.fullName}. All rights reserved.</p>
           <div className="flex flex-wrap gap-4">
             <Link href="/privacy-policy" className="hover:text-primary">Privacy Policy</Link>

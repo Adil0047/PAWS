@@ -72,9 +72,9 @@ export default function HowItWorksPage() {
               <Sparkles className="mr-1 h-3 w-3" />
               4-Step Onboarding
             </Badge>
-            <h2 className="text-balance text-2xl font-bold tracking-tight sm:text-3xl">
+            <h1 className="text-balance text-2xl font-bold tracking-tight sm:text-3xl">
               From Brief to Final Delivery
-            </h2>
+            </h1>
             <p className="mt-3 text-sm text-muted-foreground sm:text-base">
               A predictable, transparent workflow that keeps you informed at every stage.
             </p>
@@ -266,7 +266,7 @@ export default function HowItWorksPage() {
                 >
                   <MessageSquare className="h-4 w-4 text-primary" />
                   <div>
-                    <div className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
+                    <div className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
                       WhatsApp
                     </div>
                     <div className="text-sm font-semibold text-foreground">
@@ -280,7 +280,7 @@ export default function HowItWorksPage() {
                 >
                   <Mail className="h-4 w-4 text-primary" />
                   <div>
-                    <div className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
+                    <div className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
                       Email
                     </div>
                     <div className="text-sm font-semibold text-foreground">
@@ -324,7 +324,7 @@ export default function HowItWorksPage() {
               </Link>
             </Button>
           </div>
-          <p className="mt-6 text-xs text-blue-100/60">
+          <p className="mt-6 text-xs text-blue-100/80">
             WhatsApp: {contactInfo.whatsapp} · Email: {contactInfo.email} · Payments: {contactInfo.payments}
           </p>
         </div>

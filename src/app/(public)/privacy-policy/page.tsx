@@ -96,7 +96,7 @@ export default function PrivacyPolicyPage() {
         <div className="relative mx-auto max-w-5xl px-4 py-14 sm:py-20">
           <nav
             aria-label="Breadcrumb"
-            className="mb-6 flex items-center gap-2 text-xs text-blue-100/70"
+            className="mb-6 flex items-center gap-2 text-xs text-blue-100/85"
           >
             <Link href="/" className="hover:text-white">
               Home
@@ -120,7 +120,7 @@ export default function PrivacyPolicyPage() {
             protecting the privacy, confidentiality, and intellectual property of
             our clients is our highest priority.
           </p>
-          <p className="mt-4 max-w-3xl text-xs text-blue-100/70 sm:text-sm">
+          <p className="mt-4 max-w-3xl text-xs text-blue-100/85 sm:text-sm">
             This policy explains what information {brand.shortName} collects, how
             it is used, and the safeguards in place to protect your research,
             identity, and payments.
@@ -368,7 +368,7 @@ export default function PrivacyPolicyPage() {
                   <CardHeader className="pb-3">
                     <div className="flex items-center gap-2">
                       <MessageSquare className="h-4 w-4 text-accent" />
-                      <span className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
+                      <span className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
                         WhatsApp
                       </span>
                     </div>
@@ -388,7 +388,7 @@ export default function PrivacyPolicyPage() {
                   <CardHeader className="pb-3">
                     <div className="flex items-center gap-2">
                       <Mail className="h-4 w-4 text-accent" />
-                      <span className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
+                      <span className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
                         Email
                       </span>
                     </div>
@@ -406,7 +406,7 @@ export default function PrivacyPolicyPage() {
                   <CardHeader className="pb-3">
                     <div className="flex items-center gap-2">
                       <Clock className="h-4 w-4 text-accent" />
-                      <span className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
+                      <span className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
                         Business Hours
                       </span>
                     </div>

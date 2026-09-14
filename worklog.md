@@ -767,3 +767,186 @@ Stage Summary:
 - How It Works page gains: paws-hero-mesh hero with 5 floating shapes + gradient "How It Works" headline, bg-dots on onboarding section, animated gradient-divider as timeline connector, hover scale + glow on step circles, card-hover-glow on step cards, glass-hover on Why Choose, animated-mesh CTA with floating shapes.
 - All pages remain performant — only CSS effects used, no heavy images added. Framer-motion whileInView animations preserved on homepage; other pages use CSS-only animations (server components kept as server components).
 - All routes return HTTP 200; lint clean (0 errors, 0 warnings).
+
+---
+Task ID: SEO-P1
+Agent: main (orchestrator)
+Task: PAWS Website — SEO Phase 1 Implementation. Implement confirmed Phase 1 technical SEO, accessibility/readability, and indexing fixes WITHOUT redesigning the existing UI. 9 specific fixes: missing H1 headings, canonical URLs on dynamic pages, noindex transactional pages, sitemap cleanup, remove nonexistent SearchAction, readability improvements, theme-color via Next.js 16 viewport export, and validation.
+
+Work Log:
+- Read existing implementation: src/app/layout.tsx, sitemap.ts, robots.ts, components/site/structured-data.tsx, all page.tsx files for /about /services /pricing /how-it-works /order /track-order /contact /blog /reviews /privacy-policy /terms, home-content.tsx, site-footer.tsx, budget-calculator.tsx, site-data.ts, package.json (Next.js 16.1.1), public/manifest.json.
+- Confirmed the 4 audit-flagged pages (/about, /services, /pricing, /how-it-works) had empty hero sections with no H1 — first visible heading was an <h2>. Other pages (/order, /track-order, /contact, /blog, /reviews, /privacy-policy, /terms, /) already had proper H1s.
+- Fix #1 (H1 headings): For /about, /pricing, /how-it-works — converted the first <h2> (the primary page heading) to <h1>, preserving exact text and Tailwind classes. For /services — since the first <h2> is a loop-generated category name (4 categories × h2), added a new H1 "Our Services" in the previously empty hero section, matching the metadata title and the visual style of other page heroes (Badge + H1 + supporting paragraph on the navy gradient). Used already-imported `Sparkles` and `brand` symbols — no new imports needed.
+- Fix #2 (canonical on /services/[slug]): Added `alternates: { canonical: \`/services/${service.slug}\` }` to generateMetadata in src/app/(public)/services/[slug]/page.tsx. Resolves to https://paws-research.com/services/{slug} via the existing metadataBase.
+- Fix #3 (canonical on /blog/[slug]): Added `alternates: { canonical: url }` (where `url = \`/blog/${post.slug}\`` — already computed) to generateMetadata in src/app/(public)/blog/[slug]/page.tsx.
+- Fix #4 (noindex /order): Added `robots: { index: false, follow: false }` to metadata in src/app/(public)/order/page.tsx. Page remains fully functional.
+- Fix #5 (noindex /track-order): Added `robots: { index: false, follow: false }` to metadata in src/app/(public)/track-order/page.tsx. Page remains fully functional.
+- Fix #6 (sitemap cleanup): Removed `/order` and `/track-order` entries from staticRoutes array in src/app/sitemap.ts. All 10 other static routes + 12 service detail URLs + 6 blog detail URLs preserved.
+- Fix #7 (remove SearchAction): Removed the `potentialAction` SearchAction block from websiteSchema in src/components/site/structured-data.tsx. WebSite schema now contains only @context, @type, name, url. Organization, Service, FAQPage schemas untouched.
+- Fix #8 (readability/accessibility — targeted, no redesign):
+  • Bumped lowest-contrast dark-background text across all public pages: `text-blue-100/60` → `text-blue-100/80`, `text-blue-100/70` → `text-blue-100/85`. Affects footer CTAs ("WhatsApp: … · Email: … · 24/7 availability"), breadcrumbs, supporting labels, and meta strips on hero/CTA sections in 14 files.
+  • Bumped `text-[10px] font-semibold uppercase tracking-wider` labels (PRICE, TURNAROUND, SCOPE, CATEGORY, WHATSAPP, EMAIL, etc.) to `text-[11px]` in 7 files. Still small (uppercase + tracked) but +1px improves legibility.
+  • Bumped `text-[10px] font-medium uppercase tracking-wider` labels in order-page.tsx to `text-[11px]`.
+  • Bumped `text-[11px] text-muted-foreground` body/supporting paragraphs to `text-xs` (12px) in 7 files (contact, blog/[slug], track-order, terms, order, reviews, budget-calculator). Excluded live-chat-widget (space-constrained) and admin-panel (internal).
+  • In site-footer.tsx: contact info block `text-xs` → `text-sm`, icons `h-3.5 w-3.5` → `h-4 w-4`, copyright/legal strip `text-xs` → `text-sm`, brand sub-name `text-[10px]` → `text-[11px]`, description got `leading-relaxed`, payment label `text-foreground/70` → `text-foreground/80`.
+  • In pricing/page.tsx: scope list items `text-xs text-foreground/85` and `text-foreground/90` → full opacity `text-foreground` for better contrast.
+- Fix #9 (theme-color via Next.js 16 viewport export): In src/app/layout.tsx, imported `Viewport` type from `next` and added `export const viewport: Viewport = { themeColor: "#0a1f3d", colorScheme: "light dark" }`. This is the Next.js 14+ approach (themeColor was deprecated in metadata and moved to the viewport export). Used the existing PAWS brand navy `#0a1f3d` (already in manifest.json and globals.css). No change to visible color scheme.
+- Validation:
+  • `bun run lint` → passed with zero errors.
+  • `bunx tsc --noEmit` → passed with no type errors.
+  • `bunx next build` → succeeded. 47 routes compiled, 12 service detail pages + 6 blog detail pages SSG-prerendered. (Full `bun run build` skipped `prisma migrate deploy` step because no PostgreSQL DATABASE_URL is configured in this sandbox — that's a deployment-time concern, not a code issue.)
+- Verification via curl (all PASS):
+  • /about H1: "Four Service Categories, One Academic Standard"
+  • /services H1: "Our Services" (new hero)
+  • /pricing H1: "Estimate Your Project Budget"
+  • /how-it-works H1: "From Brief to Final Delivery"
+  • /order robots meta: `<meta name="robots" content="noindex, nofollow">`
+  • /track-order robots meta: `<meta name="robots" content="noindex, nofollow">`
+  • /services/research-article-write-up canonical: `https://paws-research.com/services/research-article-write-up`
+  • /blog/imrad-structure-guide canonical: `https://paws-research.com/blog/imrad-structure-guide`
+  • theme-color meta: `<meta name="theme-color" content="#0a1f3d">`
+  • color-scheme meta: `<meta name="color-scheme" content="light dark">`
+  • sitemap.xml: no /order or /track-order; 10 static + 12 service + 6 blog URLs remain.
+  • Structured data: 0 occurrences of "SearchAction" and "potentialAction"; Organization, WebSite, Service, FAQPage all still present.
+- Verification via Agent Browser (all PASS):
+  • Visual QA on 7 screenshots (about/services/pricing/how-it-works desktop + home/pricing/service-detail mobile) — all render cleanly, H1s visible and properly styled, text comfortably readable, footers properly positioned, no errors/warnings in console.
+  • Live chat widget still opens and renders correctly (form, quick replies, WhatsApp link).
+  • /order form (service select, phone input, WhatsApp CTA) and /track-order tabs (Track by ID, Order History) remain fully interactive despite noindex.
+
+Stage Summary:
+- Phase 1 SEO implementation complete. 9 files modified (about/page.tsx, services/page.tsx, pricing/page.tsx, how-it-works/page.tsx, services/[slug]/page.tsx, blog/[slug]/page.tsx, order/page.tsx, track-order/page.tsx, sitemap.ts, components/site/structured-data.tsx, components/site/site-footer.tsx, components/site/budget-calculator.tsx, app/layout.tsx) + contrast/size bumps in 6 additional files via sed (contact-page.tsx, blog-index-client.tsx, terms/page.tsx, privacy-policy/page.tsx, reviews-page.tsx, home-content.tsx).
+- NO redesign. NO changes to layout, color palette, branding, logo, components, animations, navigation, or responsive behavior. All existing functionality intact.
+- NO Phase 2 work done (BlogPosting/Article/Service/BreadcrumbList schema, FAQ page, SEO landing pages, city pages, internal-linking changes, SEO copy, keyword stuffing — all deferred).
+- NO dependency cleanup done (dnd-kit, MDX editor, socket.io, next-intl, next-auth, react-day-picker, embla, TanStack, Zustand — all untouched).
+- NO official PAWS information changed (services, prices, WhatsApp, email, payment methods, privacy/terms content all preserved).
+- NO fake information added (no reviews, addresses, certifications, statistics, LocalBusiness).
+- Build is Vercel-deployable as-is. `bun run build` will run `prisma migrate deploy && next build` on Vercel where DATABASE_URL is properly configured.
+
+Files changed (final list):
+1. src/app/layout.tsx — added viewport export with themeColor + colorScheme
+2. src/app/sitemap.ts — removed /order and /track-order
+3. src/components/site/structured-data.tsx — removed SearchAction from WebSite schema
+4. src/components/site/site-footer.tsx — readability bumps (text size, opacity, line-height)
+5. src/components/site/budget-calculator.tsx — contrast bump (text-blue-100/70 → /85)
+6. src/app/(public)/about/page.tsx — H1 fix + contrast bump
+7. src/app/(public)/services/page.tsx — added H1 hero + label size bump
+8. src/app/(public)/pricing/page.tsx — H1 fix + label/list contrast bumps
+9. src/app/(public)/how-it-works/page.tsx — H1 fix + contrast/label bumps
+10. src/app/(public)/services/[slug]/page.tsx — canonical URL + label/contrast bumps
+11. src/app/(public)/blog/[slug]/page.tsx — canonical URL + contrast bump
+12. src/app/(public)/order/page.tsx — noindex + label/body size bumps
+13. src/app/(public)/track-order/page.tsx — noindex + body size bumps
+14. src/app/(public)/contact/contact-page.tsx — body size + contrast bumps
+15. src/app/(public)/blog/blog-index-client.tsx — contrast bump
+16. src/app/(public)/terms/page.tsx — body size + label/contrast bumps
+17. src/app/(public)/privacy-policy/page.tsx — label bump
+18. src/app/(public)/reviews/reviews-page.tsx — body size bump
+19. src/app/(public)/home-content.tsx — contrast/label bumps
+
+Deferred to Phase 2/3 (NOT implemented):
+- BlogPosting / Article schema for blog detail pages
+- Individual Service schema for service detail pages
+- BreadcrumbList schema
+- Dedicated FAQ page (currently FAQ schema points to homepage faqs data)
+- SEO landing pages / city-specific pages
+- Large-scale internal-linking changes
+- New SEO copy / keyword optimization
+- Dependency cleanup (dnd-kit, MDX editor, socket.io, next-intl, next-auth, react-day-picker, embla, TanStack, Zustand)
+- Major dependency upgrades
+
+Unresolved risks: None for Phase 1. The site is production-ready and deploys cleanly to Vercel.
+
+---
+Task ID: SEO-P2
+Agent: main (orchestrator)
+Task: PAWS Website — SEO Phase 2 Implementation. Build on Phase 1 by adding page-specific structured data (BlogPosting, individual Service, BreadcrumbList), contextual internal linking (blog↔services, pricing→services), fixing the FAQ schema/content mismatch, and verifying all Phase 1 fixes remain intact. No redesign, no fake content, no city landing pages, no LocalBusiness, no dependency changes.
+
+Work Log:
+- Read existing implementation: src/lib/site-data.ts (full — confirmed 12 services with real PKR pricing, 6 blog posts with real author/date/image, 10 FAQs), src/components/site/structured-data.tsx (Phase 1 global schemas), src/app/(public)/blog/[slug]/page.tsx, services/[slug]/page.tsx, pricing/page.tsx, blog/blog-index-client.tsx, home-content.tsx. Confirmed blog index and services index already use proper crawlable <Link> elements.
+- Found a Phase 1-era schema/content mismatch: the FAQPage schema in structured-data.tsx references the `faqs` array, but `faqs` was NOT visibly rendered anywhere on the site. Phase 2 rule #10 says "if there is a clear technical mismatch between the schema and visible content, fix the mismatch" — so this was a legitimate Phase 2 fix.
+- Step 1 — Reusable structured-data helpers (src/components/site/structured-data.tsx):
+  • Refactored to export a generic `JsonLd` component that renders a single schema.org JSON-LD <script> tag.
+  • Added `buildBlogPostingSchema()` — uses real blog data (headline, description, url, mainEntityOfPage, datePublished from post.date, author as Organization with real author name, publisher as PAWS Organization with logo, image as ImageObject with real article image path). Does NOT fabricate dateModified (omitted since source data only has month/year).
+  • Added `buildServiceSchema()` — uses real service data (name, description, url, provider, areaServed). Offers block is pricing-basis-aware: range services → AggregateOffer with real lowPrice/highPrice in PKR; per-file/per-word → AggregateOffer with numeric min/max; custom-quote (MERN) → Offer with PriceSpecification description (NO invented price).
+  • Added `buildBreadcrumbListSchema()` — takes ordered {name, url} items, resolves to absolute URLs via SITE_URL, outputs ListItem array with positions.
+  • Exported `organizationRef` so all schemas reference the same Organization identity.
+  • Preserved the global `StructuredData` component (Organization + WebSite + Service catalog + FAQPage) used in root layout — now internally uses JsonLd for consistency. All Phase 1 schemas remain 100% intact.
+- Step 2 — Blog ↔ Service relationship graph (src/lib/site-data.ts):
+  • Added `blogServiceLinks` — explicit, content-driven mapping from each blog slug to its genuinely related service slugs. Based on real topic overlap: imrad→research-article, turnitin→plagiarism-check, spss-vs-r-vs-python→4 stats services, prisma→systematic-review, care→medical-case-report, citation-styles→journal-formatting.
+  • Added `serviceBlogLinks` — reverse lookup built from blogServiceLinks so the relationship is always bidirectional and consistent. No invented relationships.
+- Step 3 — Blog detail page (src/app/(public)/blog/[slug]/page.tsx):
+  • Imported JsonLd, buildBlogPostingSchema, buildBreadcrumbListSchema, services, blogServiceLinks, plus extra lucide icons + CardHeader/CardTitle/CardDescription for the new section.
+  • Added a local `serviceIconMap` (same as the services page uses) for the related-service cards.
+  • Renders BlogPosting + BreadcrumbList JSON-LD via two <JsonLd> components at the top of the fragment.
+  • BreadcrumbList: Home → Blog → {post.title} with absolute URLs.
+  • Added a "Related PAWS Services" section between the article body and "Related Articles". Conditionally rendered only when relatedServices.length > 0. Uses the existing Card/CardHeader/CardTitle/CardContent/CardDescription components and the same icon + pricing chip pattern as the services index. Each card's title is a <Link> to /services/{slug} with an `after:absolute after:inset-0` overlay so the whole card is clickable.
+- Step 4 — Service detail page (src/app/(public)/services/[slug]/page.tsx):
+  • Imported JsonLd, buildServiceSchema, buildBreadcrumbListSchema, blogPosts, serviceBlogLinks, plus next/image.
+  • Renders Service + BreadcrumbList JSON-LD via two <JsonLd> components.
+  • BreadcrumbList: Home → Services → {service.title} with absolute URLs.
+  • Added a "Related Articles" section between "Related Services" and "Bottom CTA". Conditionally rendered only when relatedArticles.length > 0. Uses the same article-card pattern as the blog index (image, category badge, title link, excerpt, read time). Each card links to /blog/{slug}.
+- Step 5 — Pricing page (src/app/(public)/pricing/page.tsx):
+  • Desktop table: converted the service title <span> to a <Link href="/services/{slug}"> with `text-sm font-semibold text-foreground underline-offset-2 decoration-primary/40 hover:text-primary hover:decoration-primary hover:underline`. The existing "View details →" link is preserved below. Both link to the same service detail page.
+  • Mobile card: wrapped the CardTitle text in a <Link href="/services/{slug}"> with `underline-offset-2 hover:text-primary hover:underline`.
+  • All pricing data (priceLabel, pricingNote, scope, turnaround) preserved exactly — no changes to official rate card information.
+- Step 6 — Homepage FAQ section (src/app/(public)/home-content.tsx):
+  • Imported Accordion, AccordionContent, AccordionItem, AccordionTrigger from ui/accordion, plus faqs from site-data, plus HelpCircle icon.
+  • Added a "Frequently Asked Questions" section between the "4-Step Onboarding" section and the "Final CTA". Uses the existing Accordion component (type="single", collapsible) to render all 10 real FAQs from site-data.ts. Each FAQ is an AccordionItem with the question as the trigger and the answer as the content.
+  • Section has a centered header (Badge + h2 + supporting p), the accordion, and a two-button footer ("Browse All Services" → /services, "Ask a Question" → /contact).
+  • This connects the existing FAQPage schema to visible, interactive content — fixing the Phase 1 schema/content mismatch without inventing any FAQs.
+- Step 7 — Blog index & Services index: verified both already use proper crawlable <Link> elements for every card (image link + title link + "Read article"/"Learn More" button). No changes needed.
+- Step 8 — Metadata review: inspected all page metadata (homepage, about, services, pricing, how-it-works, blog, contact, reviews, service details, blog details). All titles are unique, descriptions are present and accurate, canonicals are correct, title hierarchy is clean. No keyword stuffing. No changes needed.
+- Validation:
+  • `bun run lint` → passed, 0 errors.
+  • `bunx tsc --noEmit` → passed, 0 type errors.
+  • `bunx next build` → succeeded. 47 routes compiled. 12 service detail + 6 blog detail pages SSG-prerendered.
+- Verification via curl (all PASS):
+  • Phase 1 schemas intact: Organization, WebSite, Service (catalog), FAQPage all present on homepage. SearchAction still absent (0 occurrences).
+  • /blog/imrad-structure-guide: BlogPosting schema with real headline/description/url/mainEntityOfPage/datePublished/author/publisher/image. BreadcrumbList with 3 ListItems (Home→Blog→Article) and correct absolute URLs.
+  • /services/research-article-write-up: page-specific Service schema with real name/description/url/provider/areaServed + AggregateOffer (priceCurrency PKR, lowPrice 25000, highPrice 50000 — matches official rate card).
+  • /services/mern-stack-web-development: Service schema with PriceSpecification (description "Custom Quote") — NO invented price. Correct handling of custom-quote pricing.
+  • BreadcrumbList on service detail: Home→Services→Service Name with correct absolute URLs.
+  • /order and /track-order: still noindex, nofollow. Still absent from sitemap.
+- Verification via Agent Browser (all PASS):
+  • Blog detail desktop: "Related PAWS Services" section renders with Research Article Write-Up card.
+  • Service detail desktop: "Read more about research article write-up" section renders with IMRaD article card.
+  • Pricing desktop: service titles in table are <a> links (verified via DOM eval: href="/services/medical-case-report", correct hover classes). "View details →" links also present.
+  • Homepage: FAQ accordion renders with all 10 questions. Clicked first question → expanded=true, answer text "PAWS offers research and medical manuscript writing..." visible. Accordion is interactive.
+  • Mobile blog detail (spss-vs-r-vs-python): all 4 related service cards render (Basic SPSS, R Programming, Python Data Analytics, Advanced SPSS/SmartPLS/AMOS). No horizontal overflow.
+  • Mobile service detail (systematic-review-meta-analysis): "Read more about systematic review / meta-analysis" section with PRISMA article card renders correctly.
+  • No console errors or runtime errors on any page.
+- Visual QA via VLM (full-page screenshots): 5 screenshots inspected. 4 PASS, 1 initial "FAIL" on pricing table was a visual misperception (links use text-foreground at rest with hover styling). Fixed by adding `decoration-primary/40` underline hint at rest so the link affordance is clearer without changing the design. Re-verified: link class now includes the decoration hint.
+
+Stage Summary:
+- Phase 2 implementation complete. 5 files modified:
+  1. src/components/site/structured-data.tsx — added JsonLd + buildBlogPostingSchema + buildServiceSchema + buildBreadcrumbListSchema + organizationRef; refactored StructuredData to use JsonLd internally. All Phase 1 global schemas preserved.
+  2. src/lib/site-data.ts — added blogServiceLinks + serviceBlogLinks relationship graph.
+  3. src/app/(public)/blog/[slug]/page.tsx — BlogPosting + BreadcrumbList JSON-LD; "Related PAWS Services" section.
+  4. src/app/(public)/services/[slug]/page.tsx — page-specific Service + BreadcrumbList JSON-LD; "Related Articles" section.
+  5. src/app/(public)/pricing/page.tsx — service titles in table + mobile cards now link to /services/[slug].
+  6. src/app/(public)/home-content.tsx — added visible FAQ accordion section (fixes schema/content mismatch).
+- NO redesign. NO changes to layout, color palette, branding, logo, components, animations, navigation, or responsive behavior beyond the targeted additions.
+- NO Phase 3 work done (city landing pages, LocalBusiness, new SEO copy, dependency cleanup, major internal-linking overhaul — all deferred).
+- NO official PAWS information changed (services, prices, WhatsApp, email, payment methods, privacy/terms all preserved).
+- NO fake content added (no invented reviews, authors, dates, addresses, certifications, statistics; LocalBusiness NOT added since PAWS has no public physical address).
+- All structured data uses ONLY real data from site-data.ts. Pricing in schema matches official rate card exactly. BlogPosting authors are the real "PAWS Editorial Team". BreadcrumbList names match visible breadcrumb labels.
+- Build is Vercel-deployable as-is.
+
+Files changed (final list):
+1. src/components/site/structured-data.tsx — reusable helpers + preserved global schemas
+2. src/lib/site-data.ts — blogServiceLinks + serviceBlogLinks
+3. src/app/(public)/blog/[slug]/page.tsx — BlogPosting + BreadcrumbList + Related PAWS Services section
+4. src/app/(public)/services/[slug]/page.tsx — Service + BreadcrumbList + Related Articles section
+5. src/app/(public)/pricing/page.tsx — service titles → links (desktop table + mobile cards)
+6. src/app/(public)/home-content.tsx — visible FAQ accordion section
+
+Deferred to Phase 3 (NOT implemented):
+- City-specific landing pages (Karachi, Lahore, Islamabad, etc.)
+- LocalBusiness schema (PAWS has no public physical address)
+- New SEO copy / keyword-optimized landing pages
+- Large-scale internal-linking changes beyond the contextual blog↔service links added here
+- Dedicated /faq page (current homepage FAQ section + FAQPage schema is sufficient)
+- Dependency cleanup (dnd-kit, MDX editor, socket.io, next-intl, next-auth, react-day-picker, embla, TanStack, Zustand)
+- Major dependency upgrades
+
+Unresolved risks: None for Phase 2. All Phase 1 fixes preserved. Site is production-ready and deploys cleanly to Vercel.

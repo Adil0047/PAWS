@@ -11,13 +11,53 @@ import {
   MessageSquare,
   Rss,
   CheckCircle2,
+  FileText,
+  FileSearch,
+  Stethoscope,
+  BookOpenCheck,
+  ShieldCheck,
+  PenLine,
+  AlignLeft,
+  Calculator,
+  BarChart3,
+  LineChart,
+  Cpu,
+  Code,
+  type LucideIcon,
 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
-import { blogPosts, brand, contactInfo } from "@/lib/site-data";
+import {
+  blogPosts,
+  brand,
+  contactInfo,
+  services,
+  blogServiceLinks,
+} from "@/lib/site-data";
+import {
+  JsonLd,
+  buildBlogPostingSchema,
+  buildBreadcrumbListSchema,
+} from "@/components/site/structured-data";
+
+// Icon map for related-service cards on blog pages.
+const serviceIconMap: Record<string, LucideIcon> = {
+  FileText,
+  FileSearch,
+  Stethoscope,
+  BookOpenCheck,
+  ShieldCheck,
+  PenLine,
+  AlignLeft,
+  Calculator,
+  BarChart3,
+  LineChart,
+  Cpu,
+  Code,
+};
 
 type Params = { slug: string };
 
@@ -42,6 +82,9 @@ export function generateMetadata({
     return {
       title: `${post.title} | ${brand.shortName} Blog`,
       description: post.excerpt,
+      alternates: {
+        canonical: url,
+      },
       keywords: [
         post.category,
         brand.shortName,
@@ -103,14 +146,39 @@ export default async function BlogDetailPage({
             .slice(0, 3 - related.length),
         ];
 
+  // Related PAWS services for this article — based on the explicit
+  // blogServiceLinks mapping in site-data.ts. Only services that genuinely
+  // match the article topic are shown.
+  const relatedServiceSlugs = blogServiceLinks[post.slug] ?? [];
+  const relatedServices = relatedServiceSlugs
+    .map((sSlug) => services.find((s) => s.slug === sSlug))
+    .filter((s): s is (typeof services)[number] => Boolean(s));
+
+  // Page-specific structured data: BlogPosting + BreadcrumbList.
+  const blogPostingSchema = buildBlogPostingSchema({
+    slug: post.slug,
+    title: post.title,
+    excerpt: post.excerpt,
+    date: post.date,
+    author: post.author,
+    image: post.image,
+  });
+  const breadcrumbSchema = buildBreadcrumbListSchema([
+    { name: "Home", url: "/" },
+    { name: "Blog", url: "/blog" },
+    { name: post.title, url: `/blog/${post.slug}` },
+  ]);
+
   return (
     <>
+      <JsonLd schema={blogPostingSchema} />
+      <JsonLd schema={breadcrumbSchema} />
       {/* ===================== HEADER ===================== */}
       <section className="relative overflow-hidden border-b border-border bg-gradient-to-br from-[#0a1f3d] via-[#0e2a52] to-[#0c3b5a] text-white">
         <div className="relative mx-auto max-w-4xl px-4 py-12 sm:py-16">
           <nav
             aria-label="Breadcrumb"
-            className="mb-6 flex items-center gap-2 text-xs text-blue-100/70"
+            className="mb-6 flex items-center gap-2 text-xs text-blue-100/85"
           >
             <Link href="/" className="hover:text-white">
               Home
@@ -147,7 +215,7 @@ export default async function BlogDetailPage({
             {post.excerpt}
           </p>
 
-          <div className="mt-6 flex flex-wrap items-center gap-4 text-xs text-blue-100/70 sm:text-sm">
+          <div className="mt-6 flex flex-wrap items-center gap-4 text-xs text-blue-100/85 sm:text-sm">
             <span className="inline-flex items-center gap-1.5">
               <User className="h-3.5 w-3.5 text-teal-300" />
               {post.author}
@@ -251,7 +319,7 @@ export default async function BlogDetailPage({
                   href={`https://wa.me/${contactInfo.whatsappRaw}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="mt-1 text-center text-[11px] text-muted-foreground hover:text-primary"
+                  className="mt-1 text-center text-xs text-muted-foreground hover:text-primary"
                 >
                   WhatsApp: {contactInfo.whatsapp} · {contactInfo.businessHours}
                 </a>
@@ -285,6 +353,71 @@ export default async function BlogDetailPage({
           </div>
         </div>
       </article>
+
+      {/* ===================== RELATED PAWS SERVICES ===================== */}
+      {relatedServices.length > 0 && (
+        <section className="border-t border-border bg-background">
+          <div className="mx-auto max-w-7xl px-4 py-14 sm:py-16">
+            <div className="mx-auto max-w-2xl text-center">
+              <Badge variant="secondary" className="mb-3">
+                Related PAWS Services
+              </Badge>
+              <h2 className="text-balance text-2xl font-bold tracking-tight sm:text-3xl">
+                Get hands-on help with this topic
+              </h2>
+              <p className="mt-3 text-sm text-muted-foreground sm:text-base">
+                The {brand.shortName} services below directly relate to the
+                concepts covered in this article.
+              </p>
+            </div>
+
+            <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+              {relatedServices.map((service) => {
+                const Icon = serviceIconMap[service.icon] ?? FileText;
+                return (
+                  <Card
+                    key={service.slug}
+                    className="group flex flex-col transition-all duration-300 hover:-translate-y-1 hover:shadow-lg"
+                  >
+                    <CardHeader>
+                      <div className="flex items-start justify-between">
+                        <div className="flex h-11 w-11 items-center justify-center rounded-lg bg-primary/10 text-primary ring-1 ring-primary/15 transition-colors group-hover:bg-primary group-hover:text-primary-foreground">
+                          <Icon className="h-5 w-5" />
+                        </div>
+                        <Badge variant="outline" className="gap-1 text-xs font-medium">
+                          <Clock className="h-3 w-3" />
+                          {service.turnaround}
+                        </Badge>
+                      </div>
+                      <CardTitle className="mt-3 text-base leading-snug">
+                        <Link
+                          href={`/services/${service.slug}`}
+                          className="after:absolute after:inset-0 after:content-['']"
+                        >
+                          {service.title}
+                        </Link>
+                      </CardTitle>
+                      <CardDescription className="text-sm leading-relaxed">
+                        {service.shortDescription}
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent className="mt-auto">
+                      <div className="rounded-lg border border-border bg-secondary/40 px-3 py-2">
+                        <div className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
+                          Pricing
+                        </div>
+                        <div className="text-sm font-bold text-primary">
+                          {service.priceLabel}
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                );
+              })}
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* ===================== RELATED POSTS ===================== */}
       {relatedFilled.length > 0 && (
@@ -390,7 +523,7 @@ export default async function BlogDetailPage({
               <Link href="/contact">Contact {brand.shortName}</Link>
             </Button>
           </div>
-          <p className="mt-6 text-xs text-blue-100/60">
+          <p className="mt-6 text-xs text-blue-100/80">
             WhatsApp: {contactInfo.whatsapp} · Email: {contactInfo.email} ·{" "}
             {contactInfo.businessHours} availability
           </p>

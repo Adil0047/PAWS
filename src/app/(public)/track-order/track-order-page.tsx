@@ -607,7 +607,7 @@ export function TrackOrderPageClient() {
                   <CardTitle className="text-sm">3-Step Process</CardTitle>
                 </div>
                 <CardContent className="px-0 pt-3">
-                  <p className="text-[11px] leading-relaxed text-muted-foreground">
+                  <p className="text-xs leading-relaxed text-muted-foreground">
                     Placed → In Progress → Completed. Track each stage in real
                     time.
                   </p>
@@ -632,7 +632,7 @@ export function TrackOrderPageClient() {
                   >
                     WhatsApp {contactInfo.whatsapp}
                   </a>
-                  <p className="mt-1 text-[11px] text-muted-foreground">
+                  <p className="mt-1 text-xs text-muted-foreground">
                     For status questions or order changes.
                   </p>
                 </CardContent>
@@ -651,7 +651,7 @@ export function TrackOrderPageClient() {
                   <Badge variant="secondary" className="text-[11px]">
                     {contactInfo.businessHours}
                   </Badge>
-                  <p className="mt-2 text-[11px] text-muted-foreground">
+                  <p className="mt-2 text-xs text-muted-foreground">
                     Updates typically appear within 24 hours of any status
                     change.
                   </p>
@@ -692,7 +692,7 @@ export function TrackOrderPageClient() {
               <Link href="/services">Browse Services</Link>
             </Button>
           </div>
-          <p className="mt-6 text-xs text-blue-100/60">
+          <p className="mt-6 text-xs text-blue-100/80">
             WhatsApp: {contactInfo.whatsapp} · Email: {contactInfo.email} ·{" "}
             {contactInfo.businessHours} availability
           </p>

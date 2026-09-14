@@ -23,6 +23,7 @@ import {
   FileCheck2,
   RefreshCw,
   Sparkles,
+  HelpCircle,
   type LucideIcon,
 } from "lucide-react";
 
@@ -30,11 +31,18 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
+import {
   brand,
   contactInfo,
   services,
   whyChoosePaws,
   onboardingSteps,
+  faqs,
 } from "@/lib/site-data";
 
 const iconMap: Record<string, LucideIcon> = {
@@ -161,7 +169,7 @@ export default function HomeContent() {
                   <MessageSquare className="h-4 w-4 text-teal-300" />
                   WhatsApp: {contactInfo.whatsapp}
                 </a>
-                <span className="inline-flex items-center gap-2 text-blue-100/70">
+                <span className="inline-flex items-center gap-2 text-blue-100/85">
                   <Clock className="h-4 w-4 text-teal-300" />
                   {contactInfo.businessHours} availability
                 </span>
@@ -185,7 +193,7 @@ export default function HomeContent() {
                   </div>
                   <div>
                     <div className="text-base font-semibold">Publication Compliance</div>
-                    <div className="text-xs text-blue-100/70">Built into every deliverable</div>
+                    <div className="text-xs text-blue-100/85">Built into every deliverable</div>
                   </div>
                 </div>
 
@@ -204,7 +212,7 @@ export default function HomeContent() {
                 </div>
 
                 <div className="mt-6 border-t border-white/10 pt-4">
-                  <div className="text-[10px] font-semibold uppercase tracking-wider text-blue-100/60">
+                  <div className="text-[11px] font-semibold uppercase tracking-wider text-blue-100/80">
                     Aligned Standards
                   </div>
                   <div className="mt-2 flex flex-wrap gap-2">
@@ -342,7 +350,7 @@ export default function HomeContent() {
                     </CardHeader>
                     <CardContent className="flex-1">
                       <div className="rounded-lg border border-border bg-secondary/40 px-3 py-2">
-                        <div className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
+                        <div className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
                           Starting at
                         </div>
                         <div className="text-sm font-bold text-primary">{service.priceLabel}</div>
@@ -492,6 +500,56 @@ export default function HomeContent() {
         </div>
       </section>
 
+      {/* ===================== FAQ ===================== */}
+      <section className="bg-background">
+        <div className="mx-auto max-w-4xl px-4 py-16 sm:py-20">
+          <div className="mx-auto max-w-2xl text-center">
+            <Badge variant="secondary" className="mb-3">
+              <HelpCircle className="mr-1 h-3 w-3" />
+              Frequently Asked Questions
+            </Badge>
+            <h2 className="text-balance text-3xl font-bold tracking-tight sm:text-4xl">
+              Answers to Common Questions
+            </h2>
+            <p className="mt-3 text-sm text-muted-foreground sm:text-base">
+              Pricing, turnaround, revisions, payments, and confidentiality —
+              the essentials of working with {brand.shortName}.
+            </p>
+          </div>
+
+          <div className="mt-10">
+            <Accordion type="single" collapsible className="w-full">
+              {faqs.map((faq, idx) => (
+                <AccordionItem
+                  key={faq.question}
+                  value={`faq-${idx}`}
+                  className="border-b border-border"
+                >
+                  <AccordionTrigger className="text-left text-sm font-semibold text-foreground hover:text-primary sm:text-base">
+                    {faq.question}
+                  </AccordionTrigger>
+                  <AccordionContent className="text-sm leading-relaxed text-muted-foreground sm:text-base">
+                    {faq.answer}
+                  </AccordionContent>
+                </AccordionItem>
+              ))}
+            </Accordion>
+          </div>
+
+          <div className="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row">
+            <Button asChild variant="outline" className="gap-2">
+              <Link href="/services">
+                Browse All Services
+                <ArrowRight className="h-4 w-4" />
+              </Link>
+            </Button>
+            <Button asChild className="gap-2">
+              <Link href="/contact">Ask a Question</Link>
+            </Button>
+          </div>
+        </div>
+      </section>
+
       {/* ===================== FINAL CTA ===================== */}
       <section className="relative overflow-hidden bg-gradient-to-br from-[#0a1f3d] via-[#0e2a52] to-[#0c3b5a] text-white">
         <div className="relative mx-auto max-w-5xl px-4 py-16 text-center sm:py-20">
@@ -521,7 +579,7 @@ export default function HomeContent() {
             </a>
           </div>
 
-          <p className="mt-6 text-xs text-blue-100/60">
+          <p className="mt-6 text-xs text-blue-100/80">
             Payments: {contactInfo.payments} · {contactInfo.businessHours} availability
           </p>
         </div>

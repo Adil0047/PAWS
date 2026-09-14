@@ -14,6 +14,10 @@ export const metadata: Metadata = {
     "MERN stack quote Pakistan",
     "FCPS synopsis writing",
   ],
+  robots: {
+    index: false,
+    follow: false,
+  },
   openGraph: {
     title: `Request a Quote | ${brand.shortName}`,
     description: `Submit a quote request for any of the 12 official ${brand.shortName} services. WhatsApp ${contactInfo.whatsapp}.`,

@@ -133,9 +133,9 @@ export default function AboutPage() {
               <Sparkles className="mr-1 h-3 w-3" />
               What PAWS Does
             </Badge>
-            <h2 className="text-balance text-2xl font-bold tracking-tight sm:text-3xl">
+            <h1 className="text-balance text-2xl font-bold tracking-tight sm:text-3xl">
               Four Service Categories, One Academic Standard
-            </h2>
+            </h1>
             <p className="mt-3 text-sm text-muted-foreground sm:text-base">
               {brand.shortName} delivers manuscript writing, statistical analysis,
               plagiarism reduction, and web development under one publication-focused
@@ -418,7 +418,7 @@ export default function AboutPage() {
               </Link>
             </Button>
           </div>
-          <p className="mt-6 text-xs text-blue-100/60">
+          <p className="mt-6 text-xs text-blue-100/80">
             WhatsApp: {contactInfo.whatsapp} · Email: {contactInfo.email} · {contactInfo.businessHours} availability
           </p>
         </div>

@@ -199,7 +199,7 @@ export default function TermsPage() {
         <div className="relative mx-auto max-w-5xl px-4 py-14 sm:py-20">
           <nav
             aria-label="Breadcrumb"
-            className="mb-6 flex items-center gap-2 text-xs text-blue-100/70"
+            className="mb-6 flex items-center gap-2 text-xs text-blue-100/85"
           >
             <Link href="/" className="hover:text-white">
               Home
@@ -223,7 +223,7 @@ export default function TermsPage() {
             {brand.fullName}) and our clients. By requesting a quote, placing an
             order, or making a payment, you agree to the terms outlined below.
           </p>
-          <p className="mt-4 max-w-3xl text-xs text-blue-100/70 sm:text-sm">
+          <p className="mt-4 max-w-3xl text-xs text-blue-100/85 sm:text-sm">
             {brand.shortName} operates as a specialized scientific consultation,
             medical writing, and technical service platform. All deliverables
             are provided strictly for research support, consultation, model
@@ -345,7 +345,7 @@ export default function TermsPage() {
                   <CardHeader className="pb-3">
                     <div className="flex items-center gap-2">
                       <MessageSquare className="h-4 w-4 text-accent" />
-                      <span className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
+                      <span className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
                         WhatsApp
                       </span>
                     </div>
@@ -365,7 +365,7 @@ export default function TermsPage() {
                   <CardHeader className="pb-3">
                     <div className="flex items-center gap-2">
                       <Mail className="h-4 w-4 text-accent" />
-                      <span className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
+                      <span className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
                         Email
                       </span>
                     </div>
@@ -383,7 +383,7 @@ export default function TermsPage() {
                   <CardHeader className="pb-3">
                     <div className="flex items-center gap-2">
                       <Clock className="h-4 w-4 text-accent" />
-                      <span className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
+                      <span className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
                         Business Hours
                       </span>
                     </div>
@@ -444,7 +444,7 @@ export default function TermsPage() {
                     <Button asChild variant="outline" className="w-full gap-2">
                       <Link href="/services">View Services</Link>
                     </Button>
-                    <p className="mt-1 text-center text-[11px] text-muted-foreground">
+                    <p className="mt-1 text-center text-xs text-muted-foreground">
                       Available {contactInfo.businessHours} · WhatsApp{" "}
                       {contactInfo.whatsapp}
                     </p>

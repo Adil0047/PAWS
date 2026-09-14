@@ -12,6 +12,10 @@ export const metadata: Metadata = {
     "manuscript order lookup",
     "SPSS analysis order status",
   ],
+  robots: {
+    index: false,
+    follow: false,
+  },
   openGraph: {
     title: `Track Order | ${brand.shortName}`,
     description: `Track your ${brand.shortName} order by Order ID or view your complete order history by email.`,

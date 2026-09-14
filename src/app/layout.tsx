@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
@@ -15,6 +15,13 @@ const inter = Inter({
 });
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://paws-research.com";
+
+// Next.js 16: themeColor & colorScheme live in the viewport export,
+// not in metadata (deprecated since Next.js 14).
+export const viewport: Viewport = {
+  themeColor: "#0a1f3d",
+  colorScheme: "light dark",
+};
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),

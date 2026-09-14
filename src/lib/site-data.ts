@@ -668,6 +668,39 @@ export const blogCategories = [
   "Editorial Compliance",
 ];
 
+// ============ BLOG ↔ SERVICE RELATIONSHIPS ============
+// Explicit, content-driven mapping between existing blog posts and existing
+// services. Used for contextual internal linking (blog → services and
+// services → blog). No invented content — just declares which existing
+// entities are topically related based on their real subject matter.
+export const blogServiceLinks: Record<string, string[]> = {
+  "imrad-structure-guide": ["research-article-write-up"],
+  "turnitin-non-repository-guide": ["plagiarism-check-turnitin"],
+  "spss-vs-r-vs-python": [
+    "basic-spss-analysis",
+    "r-programming-biostatistics",
+    "python-data-analytics-ml",
+    "advanced-spss-smartpls-amos",
+  ],
+  "prisma-guidelines-explained": ["systematic-review-meta-analysis"],
+  "care-checklist-case-reports": ["medical-case-report"],
+  "citation-styles-guide": ["journal-formatting-referencing"],
+};
+
+// Reverse lookup: for a given service slug, return the blog slugs that
+// reference it. Built once from blogServiceLinks so the relationship is
+// always bidirectional and consistent.
+export const serviceBlogLinks: Record<string, string[]> = services.reduce(
+  (acc, service) => {
+    const linkedBlogSlugs = Object.entries(blogServiceLinks)
+      .filter(([, serviceSlugs]) => serviceSlugs.includes(service.slug))
+      .map(([blogSlug]) => blogSlug);
+    acc[service.slug] = linkedBlogSlugs;
+    return acc;
+  },
+  {} as Record<string, string[]>,
+);
+
 // ============ SAMPLES ============
 export type Sample = {
   title: string;

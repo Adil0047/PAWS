@@ -179,7 +179,7 @@ export function ReviewsPageClient() {
                 <span className="text-lg font-bold text-white">
                   {avgRating.toFixed(1)}
                 </span>
-                <span className="text-xs text-blue-100/70">
+                <span className="text-xs text-blue-100/85">
                   from {reviews.length} review{reviews.length !== 1 ? "s" : ""}
                 </span>
               </div>
@@ -423,7 +423,7 @@ export function ReviewsPageClient() {
                         placeholder="Tell us about your experience with our service..."
                         className="resize-none"
                       />
-                      <p className="text-[11px] text-muted-foreground">
+                      <p className="text-xs text-muted-foreground">
                         {form.message.length}/500 characters · Minimum 20
                         characters recommended
                       </p>
@@ -433,7 +433,7 @@ export function ReviewsPageClient() {
 
                     <div className="flex items-start gap-3 rounded-lg border border-primary/10 bg-primary/5 p-3">
                       <ShieldCheck className="h-5 w-5 shrink-0 text-primary" />
-                      <p className="text-[11px] leading-relaxed text-muted-foreground">
+                      <p className="text-xs leading-relaxed text-muted-foreground">
                         Reviews are moderated for authenticity. Your personal
                         details are never shared.
                       </p>
@@ -494,7 +494,7 @@ export function ReviewsPageClient() {
               </Link>
             </Button>
           </div>
-          <p className="mt-6 text-xs text-blue-100/60">
+          <p className="mt-6 text-xs text-blue-100/80">
             WhatsApp: {contactInfo.whatsapp} · Email: {contactInfo.email} ·{" "}
             {contactInfo.businessHours} availability
           </p>

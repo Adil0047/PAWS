@@ -358,7 +358,7 @@ export default function HomeContent() {
                     </CardContent>
                     <CardFooter className="gap-2">
                       <Button asChild variant="outline" size="sm" className="flex-1">
-                        <Link href={`/services/${service.slug}`}>Learn More</Link>
+                        <Link href={`/services/${service.slug}`}>View {service.title} Service</Link>
                       </Button>
                       <Button asChild size="sm" className="flex-1 gap-1">
                         <Link href="/order">

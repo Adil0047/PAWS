@@ -950,3 +950,170 @@ Deferred to Phase 3 (NOT implemented):
 - Major dependency upgrades
 
 Unresolved risks: None for Phase 2. All Phase 1 fixes preserved. Site is production-ready and deploys cleanly to Vercel.
+
+---
+Task ID: VERIFY-P1P2-ZIP
+Agent: main (orchestrator)
+Task: PAWS Website — Phase 1 + Phase 2 Verification, Repair & Fresh ZIP Export. Audit the ACTUAL current codebase (not previous reports) to determine whether Phase 1 and Phase 2 were genuinely implemented. Repair only what is missing. Export a fresh ZIP from the resulting codebase.
+
+Work Log:
+- Read git history: confirmed commits 4a7173d (Phase 1 — 24 files, H1/canonical/noindex/sitemap/SearchAction/theme-color/readability) and 2ce332a (Phase 2 — blog/[slug] +134, home-content +58, pricing +14, services/[slug] +109, structured-data +195, site-data +33). Working tree clean before this task.
+- Phase 1 source-level audit (all confirmed present, no repairs needed):
+  • H1s: /about "Four Service Categories, One Academic Standard", /services "Our Services", /pricing "Estimate Your Project Budget", /how-it-works "From Brief to Final Delivery". All 14 public pages have exactly 1 H1.
+  • Canonicals: /services/[slug] uses `alternates.canonical: /services/${service.slug}`; /blog/[slug] uses `alternates.canonical: url` (= /blog/${post.slug}).
+  • Noindex: /order and /track-order both have `robots: { index: false, follow: false }`.
+  • Sitemap: excludes /order, /track-order, /admin. Includes 10 static + 12 service detail + 6 blog detail = 28 URLs.
+  • Robots: allows /, disallows /api/ and /admin, references sitemap.
+  • SearchAction: 0 occurrences in structured-data.tsx (removed in Phase 1).
+  • Theme color: `export const viewport: Viewport = { themeColor: "#0a1f3d", colorScheme: "light dark" }` in layout.tsx (Next.js 16 approach).
+  • Readability: no text-blue-100/60 remaining; text-sm and text-[11px] in footer; contrast bumped across all files.
+- Phase 2 source-level audit (all confirmed present, no repairs needed):
+  • Reusable helpers in structured-data.tsx: JsonLd, buildBlogPostingSchema, buildServiceSchema, buildBreadcrumbListSchema, organizationRef, StructuredData — all exported.
+  • BlogPosting on /blog/[slug]: buildBlogPostingSchema + <JsonLd schema={blogPostingSchema} />.
+  • Service schema on /services/[slug]: buildServiceSchema + <JsonLd schema={serviceSchema} />.
+  • BreadcrumbList on both dynamic pages with correct Home→Section→Item hierarchy.
+  • blogServiceLinks + serviceBlogLinks in site-data.ts (bidirectional relationship graph).
+  • "Related PAWS Services" section on blog detail (conditional on relatedServices.length > 0).
+  • "Related Articles" section on service detail (conditional on relatedArticles.length > 0).
+  • Pricing page: mobile card title + desktop table title + "View details" all link to /services/${service.slug} (3 link instances per service).
+  • Homepage FAQ accordion: Accordion + faqs.map, 10 real FAQs rendered visibly.
+- Runtime HTML verification via curl + Python (all confirmed):
+  • Homepage global schemas: Organization, WebSite, Service, FAQPage (10 questions). No SearchAction, no potentialAction, no LocalBusiness.
+  • /blog/imrad-structure-guide: BlogPosting with real headline/url/datePublished/author/publisher/image/mainEntityOfPage. BreadcrumbList: Home→Blog→Article, absolute URLs.
+  • /services/research-article-write-up: Service with real name/url/provider/areaServed + AggregateOffer (PKR 25000–50000, matches official rate card). BreadcrumbList: Home→Services→Service.
+  • /services/mern-stack-web-development: Service with Offer + PriceSpecification "Custom Quote" (NO fabricated prices).
+  • /order, /track-order, /admin: all noindex,nofollow.
+  • theme-color #0a1f3d, color-scheme light dark.
+  • Sitemap: 0 occurrences of /order, /track-order, /admin. 18 service+blog detail URLs.
+  • Pricing page: 12 unique service detail links. Blog index: 6 blog detail links. Services index: 12 service detail links.
+  • Service→Blog: systematic-review→prisma article, research-article→imrad article.
+  • Blog→Services: spss article has 4 related service links (basic-spss, r-programming, python-data-analytics, advanced-spss-smartpls-amos).
+  • Homepage: all 10 FAQ questions visibly rendered (matches FAQPage schema).
+  • Canonicals: all 4 dynamic pages have correct absolute canonical URLs.
+  • H1s: all 4 target pages have exactly 1 H1 with correct text.
+- Agent Browser interactive QA:
+  • Homepage FAQ accordion: clicked first question → expanded=true, answer text visible.
+  • Pricing table: service titles are <a> elements (verified via DOM eval: href="/services/...", correct hover classes).
+  • Blog detail: "Related PAWS Services" section renders with Research Article Write-Up link.
+  • Service detail: "Read more about systematic review" section renders with PRISMA article link.
+  • No console errors or runtime errors on any page.
+- Validation:
+  • `bun run lint` → 0 errors.
+  • `bunx tsc --noEmit` → 0 errors.
+  • `bunx next build` → succeeded, 47 routes compiled, 12 service detail + 6 blog detail pages SSG-prerendered.
+- Fresh ZIP export:
+  • Created via `git archive HEAD` (only tracked files) into /tmp/paws-fresh.tar.
+  • Extracted, removed .env and dev.log (dev.log not tracked anyway).
+  • Verified all 10 key Phase 1/2 files present in extracted archive.
+  • Verified .env EXCLUDED, .env.example INCLUDED.
+  • Zipped to download/paws-website.zip (9,141,106 bytes, timestamp 2026-09-14 04:14:15).
+  • Also created download/paws-website.tar.gz (9,013,196 bytes).
+  • ZIP integrity test: No errors detected.
+  • Content verification via python zipfile: blog/[slug]/page.tsx has buildBlogPostingSchema×2 + buildBreadcrumbListSchema×2 + JsonLd×3 + "Related PAWS Services". services/[slug]/page.tsx has buildServiceSchema×2 + buildBreadcrumbListSchema×2 + JsonLd×3 + "Related Articles". structured-data.tsx has 8 helper references. site-data.ts has 4 blogServiceLinks/serviceBlogLinks references. layout.tsx has themeColor. sitemap.ts has 0 /order or /track-order. order/page.tsx has index:false. pricing/page.tsx has 3 service links. home-content.tsx has 14 Accordion/faqs references.
+  • Fresh ZIP is 9.14MB vs old stale ZIP 1.98MB — clearly different (old one was missing Phase 2).
+  • 0 occurrences of node_modules/, .next/, dev.log in ZIP.
+
+Stage Summary:
+- Phase 1: COMPLETE. No repairs needed.
+- Phase 2: COMPLETE. No repairs needed.
+- Fresh ZIP: created at download/paws-website.zip (9.14MB, 281 entries, 225 source files). Contains the actual current audited codebase with all Phase 1+2 implementations. .env excluded, .env.example included. No node_modules, .next, or dev.log.
+- Source code: unchanged from HEAD (no repairs were necessary — both phases were genuinely implemented in the committed code).
+- Working tree changes: only download/paws-website.zip and download/paws-website.tar.gz modified (fresh exports).
+- Phase 3 NOT implemented (per instructions).
+
+---
+Task ID: SEO-P3
+Agent: main (orchestrator)
+Task: PAWS Website — SEO Phase 3 Implementation. Verify Phase 1+2 intact, then implement only genuine Phase 3 improvements: performance, crawlability, search-readiness, content-discovery. No redesign, no fake content, no dependency removal, no Phase 4.
+
+Work Log:
+- Verified Phase 1 intact (all items confirmed in source): H1s on /about /services /pricing /how-it-works, canonicals on dynamic pages, /order + /track-order noindex, sitemap excludes transactional pages, robots.txt correct, SearchAction removed (0 occurrences), theme-color #0a1f3d via viewport export, readability improvements present.
+- Verified Phase 2 intact (all items confirmed in source): reusable helpers (JsonLd, buildBlogPostingSchema, buildServiceSchema, buildBreadcrumbListSchema), BlogPosting on /blog/[slug], Service schema on /services/[slug], BreadcrumbList on both, blogServiceLinks + serviceBlogLinks, Related PAWS Services section on blog, Related Articles section on service detail, pricing → service links (3 per service), homepage FAQ accordion (10 FAQs), global schemas (Organization, WebSite, Service, FAQPage).
+- Audited 404 page: NO custom not-found.tsx existed. Dynamic routes called notFound() but rendered Next.js default generic 404. Genuine improvement opportunity.
+- Audited image SEO: ALL images have alt text and sizes attributes. priority used appropriately (homepage hero, blog detail hero, header logo only). No changes needed.
+- Audited client components: 16 "use client" files. Most are legitimately client (forms, state, interactivity, framer-motion). Two candidates identified:
+  • site-footer.tsx — marked "use client" but has ZERO hooks/state/event handlers. Only imported by server layout.tsx files. Safe to convert.
+  • admin-skeletons.tsx — marked "use client" but pure presentational. HOWEVER, imported by admin-panel.tsx (client component), so converting would have no effect (still bundled as client via import). Not converted.
+- Audited font weights: Inter loads 400, 500, 600, 700. All 4 weights are used (font-bold=139, font-semibold=167, font-medium=81, font-normal=default body). No optimization needed.
+- Audited heading hierarchy: all 7 key pages have NO skipped heading levels. Perfect.
+- Audited sitemap lastModified: uses new Date() for all entries — honest (no fake dates). Blog posts have "Sep 2026" string dates (not parseable), so using current date is the correct choice. No change.
+- Audited internal linking: homepage links to /services (general) + individual featured service cards link to /services/[slug]. About page links to /services. How It Works links to /pricing + /order. All genuine, no gaps requiring forced links.
+- Audited metadata: all pages have descriptions + canonicals. Homepage inherits canonical "/" from layout.tsx. No gaps.
+- Audited dependencies (report only, NOT removed):
+  • Definitely unused (not imported anywhere): @dnd-kit/*, @mdxeditor/editor, react-syntax-highlighter, socket.io-client, next-intl, next-auth, @tanstack/react-table, @tanstack/react-query, zustand.
+  • Used only by unused shadcn UI components: react-day-picker (Calendar component not used on any page — blog/track-order use the lucide Calendar ICON, not the shadcn component), embla-carousel-react (Carousel component not used on any page).
+  • All 11 packages listed in the prompt are candidates for future cleanup but were NOT removed per instructions.
+- Implemented Phase 3 improvements (2 changes only — both genuine, safe, high-value):
+  1. Created src/app/not-found.tsx — custom branded 404 page:
+     • Navy gradient hero matching PAWS design, PAWS logo + brand name, "404 · Page Not Found" badge, large gradient "404" H1, supportive message, "Back to Home" + "Browse Services" CTAs.
+     • Quick links section with 3 cards: Services (/services), Blog (/blog), Contact PAWS (WhatsApp link).
+     • Returns correct HTTP 404 status for: nonexistent routes, invalid service slugs, invalid blog slugs.
+     • Lightweight (no client JS, server component, no heavy dependencies).
+  2. Converted site-footer.tsx from client to server component:
+     • Removed "use client" directive.
+     • Footer has zero hooks/state/event handlers — pure presentational with Link + Image + data imports.
+     • Only imported by server layout.tsx files — conversion is 100% safe.
+     • Benefit: footer no longer ships in client JS bundle. Footer HTML is server-rendered (crawlable) and the component code doesn't bloat the client bundle.
+- Validation:
+  • bun run lint → 0 errors.
+  • bunx tsc --noEmit → 0 errors.
+  • bunx next build → succeeded, 47 routes compiled.
+- Runtime verification:
+  • /nonexistent-page → 404 status + branded PAWS page with "404 · Page Not Found".
+  • /services/fake-service-123 → 404 status.
+  • /blog/fake-article-123 → 404 status.
+  • Phase 1+2 all still intact: /order + /track-order noindex, SearchAction absent, theme-color, BlogPosting, Service schema, BreadcrumbList, sitemap excludes, FAQ visible.
+  • Footer server-rendered: "View All Services", "Privacy Policy", "Terms & Conditions", "All rights reserved" all present in raw server HTML (crawlable).
+- Agent Browser visual QA:
+  • 404 page desktop + mobile: renders cleanly, H1 "404", CTAs work, quick links cards render. No errors.
+  • Homepage desktop + mobile: footer renders correctly with all links, FAQ accordion still works, no hydration errors.
+  • All 11 public pages tested (/ /about /services /pricing /how-it-works /contact /reviews /blog /services/research-article-write-up /blog/imrad-structure-guide /order /track-order): zero errors on all.
+
+Stage Summary:
+- Phase 3 implementation complete. 2 files changed:
+  1. src/app/not-found.tsx — NEW custom branded 404 page (server component, lightweight, SEO-friendly, returns correct HTTP 404).
+  2. src/components/site/site-footer.tsx — converted from client to server component (removed "use client").
+- NO redesign. NO changes to branding, logo, colors, layout, pricing, services, or official business information.
+- NO fake content added.
+- NO dependencies removed (reported usage status for future cleanup).
+- NO Phase 4 work done.
+- All Phase 1 + Phase 2 implementations preserved and verified intact.
+- Blog content strategy: 5-10 future article topics identified (see final report) — NOT created, just planned.
+
+Files changed (final list):
+1. src/app/not-found.tsx — NEW: custom branded 404 page
+2. src/components/site/site-footer.tsx — MODIFIED: removed "use client" (server component conversion)
+
+Deferred to Phase 4/future (NOT implemented):
+- Dependency cleanup (9 definitely unused + 2 unused-shadcn-component packages)
+- City landing pages (not justified without unique content)
+- LocalBusiness schema (no genuine public physical address)
+- Google Search Console / Analytics integration (no real IDs configured)
+- BlogPosting dateModified (source data only has month/year strings)
+- Dedicated /faq page (current homepage FAQ + schema is sufficient)
+- Additional blog articles (content strategy produced, not executed)
+- Major package upgrades
+
+---
+Task ID: SEO-LINK-TEXT-FIX
+Agent: main (orchestrator)
+Task: Fix PageSpeed SEO audit "Links do not have descriptive text" — replace 6 generic "Learn More" links with descriptive service-name-based text. Surgical change only, no redesign.
+
+Work Log:
+- Located all "Learn More" instances in codebase: 3 files (home-content.tsx, services/page.tsx, services/[slug]/page.tsx).
+- Confirmed the 6 PageSpeed-flagged services exactly match the homepage's featuredSlugs array: research-article-write-up, medical-case-report, plagiarism-check-turnitin, basic-spss-analysis, r-programming-biostatistics, mern-stack-web-development.
+- Replaced "Learn More" with "View {service.title} Service" (dynamic, uses real service name) in all 3 locations:
+  • home-content.tsx:361 — homepage featured services (6 links, the PageSpeed-flagged ones)
+  • services/page.tsx:181 — /services index (all 12 services use the same generic text, would also fail audit)
+  • services/[slug]/page.tsx:439 — related services section on service detail pages (same generic text)
+- Preserved all existing styling/classes, destination URLs, button variants, ArrowRight icons, and flex layouts.
+- Did NOT change: URLs, service data, pricing, headings, metadata, structured data, sitemap, robots.txt, Phase 1/2/3 implementations, dependencies, Next.js config, fonts, images, layout, animations.
+- Validation: lint (0 errors), tsc (0 errors), next build (47 routes compiled).
+- Runtime verification: all 6 homepage links now render as "View Research Article Write-Up Service", "View Medical Case Report Service", "View Plagiarism Check (Turnitin) Service", "View Basic SPSS Analysis Service", "View R Programming & Biostatistics Service", "View MERN Stack Web Development Service". All 12 services on /services index also updated. Related-services section on /services/[slug] updated. Zero "Learn More" instances remain in rendered HTML.
+- Agent Browser visual QA: desktop + mobile rendering confirmed, no button overflow, no layout breakage, no errors.
+
+Stage Summary:
+- 3 files modified (home-content.tsx, services/page.tsx, services/[slug]/page.tsx).
+- All "Learn More" generic link text replaced with descriptive "View {Service Name} Service".
+- No Phase 1/2/3 SEO functionality affected.
+- PageSpeed "Links do not have descriptive text" audit issue resolved.

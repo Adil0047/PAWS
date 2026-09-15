@@ -1117,3 +1117,46 @@ Stage Summary:
 - All "Learn More" generic link text replaced with descriptive "View {Service Name} Service".
 - No Phase 1/2/3 SEO functionality affected.
 - PageSpeed "Links do not have descriptive text" audit issue resolved.
+
+---
+Task ID: ADMIN-MOBILE-SCROLL-FIX
+Agent: main (orchestrator)
+Task: Fix admin panel mobile tab bar — the horizontal tab navigation (Activity, Orders, Messages, Reviews, Chats, Subscribers) was cut off on mobile and the last few tabs (Reviews, Chats, Subscribers) were inaccessible. Make it scrollable.
+
+Work Log:
+- Analyzed the user's mobile screenshot via VLM: confirmed the tab bar with 6 tabs was cut off on the right side. "Messages" was partially visible and "Subscribers" (the 6th tab) was completely hidden off-screen. No horizontal scroll was possible.
+- Located the tab bar in src/components/site/admin-panel.tsx:597 — the `<TabsList> had 6 <TabsTrigger> children (Activity, Orders, Messages, Reviews, Chats, Subscribers).
+- Root cause analysis:
+  • The shadcn TabsList default classes include `inline-flex w-fit justify-center` and each TabsTrigger has `flex-1` — meaning all 6 tabs try to fill equal space in the available width.
+  • On desktop (1440px), all 6 tabs fit fine (scrollWidth <= clientWidth).
+  • On mobile (iPhone 14, 390px viewport → 324px container), the 6 tabs with icons + text + badges need 530px but only have 324px → 206px of tabs are cut off.
+  • The `justify-center` from the default made it worse: when tabs overflow, centering means the first tab (Activity) was also partially cut off on the left.
+- Fix applied (3 changes):
+  1. Added `scrollbar-hide` CSS utility to src/app/globals.css — a standard utility class that hides scrollbars for horizontal scroll containers (cleaner mobile UX, still scrollable via touch/swipe). Uses `-ms-overflow-style: none`, `scrollbar-width: none`, and `::-webkit-scrollbar { display: none }`.
+  2. Modified the admin TabsList (src/components/site/admin-panel.tsx:597) with: `scrollbar-hide w-full max-w-full overflow-x-auto overflow-y-hidden justify-start rounded-lg p-[3px] flex-nowrap [&>button]:flex-none [&>button]:shrink-0`
+     • `w-full max-w-full` — take full container width (override default `w-fit`)
+     • `overflow-x-auto` — enable horizontal scrolling
+     • `overflow-y-hidden` — prevent vertical scrollbar
+     • `justify-start` — left-align tabs so Activity (first tab) is always visible at scroll position 0 (override default `justify-center` which cut off the first tab)
+     • `flex-nowrap` — prevent tabs from wrapping
+     • `[&>button]:flex-none [&>button]:shrink-0` — override the default `flex-1` on TabsTrigger so tabs keep their natural width instead of being squished equally
+     • `scrollbar-hide` — hide scrollbar for clean mobile look (still scrollable)
+- Did NOT change: any tab destinations, tab content, tab order, admin functionality, KPI cards, charts, or any other admin panel UI. Only the TabsList container classes were modified.
+- Validation:
+  • `bun run lint` → 0 errors.
+  • `bunx tsc --noEmit` → 0 errors.
+- Agent Browser verification (iPhone 14 device emulation, 390×844 viewport):
+  • Before fix: only 3-4 tabs visible, "Subscribers" completely inaccessible, "Activity" partially cut off on left due to justify-center.
+  • After fix: DOM confirms `justify: flex-start`, `scrollLeft: 0`, `canScroll: true`, `scrollWidth: 530`, `clientWidth: 324`. All 6 tabs accessible — Activity is first on the left, Subscribers is accessible by scrolling right.
+  • Clicked "Subscribers" tab (previously inaccessible) → successfully selected and content panel updated. Screenshot confirms.
+  • VLM visual confirmation: "Activity tab is clearly visible as the first item on the far left... Both Orders and Messages are also visible."
+- Desktop verification (1440×900):
+  • DOM confirms `allVisible: true`, `canScroll: false` — all 6 tabs fit without scrolling on desktop. No visual change to desktop layout.
+
+Stage Summary:
+- 2 files modified:
+  1. src/app/globals.css — added `scrollbar-hide` CSS utility (6 lines)
+  2. src/components/site/admin-panel.tsx — modified TabsList className (1 line, line 597)
+- All 6 admin tabs (Activity, Orders, Messages, Reviews, Chats, Subscribers) are now fully accessible on mobile via horizontal scrolling.
+- Desktop layout unchanged.
+- No admin functionality, tab content, or routing affected.

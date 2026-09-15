@@ -594,7 +594,7 @@ export function AdminPanel({ inline = false }: { inline?: boolean }) {
         {/* Tabs */}
         <Tabs value={tab} onValueChange={setTab} className="flex flex-1 flex-col overflow-hidden">
           <div className="border-b border-border px-4 pt-3">
-            <TabsList className="bg-secondary">
+            <TabsList className="bg-secondary scrollbar-hide w-full max-w-full overflow-x-auto overflow-y-hidden justify-start rounded-lg p-[3px] flex-nowrap [&>button]:flex-none [&>button]:shrink-0">
               <TabsTrigger value="activity" className="gap-1.5">
                 <Activity className="h-3.5 w-3.5" />
                 Activity

@@ -139,6 +139,18 @@
   background: oklch(0.7 0.04 145);
 }
 
+/* Hide scrollbar for horizontal tab bars on mobile (cleaner UX, still scrollable) */
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+.scrollbar-hide::-moz-scrollbar {
+  display: none;
+}
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
 /* Subtle academic grid background */
 .bg-academic-grid {
   background-image:

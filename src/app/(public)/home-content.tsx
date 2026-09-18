@@ -356,11 +356,11 @@ export default function HomeContent() {
                         <div className="text-sm font-bold text-primary">{service.priceLabel}</div>
                       </div>
                     </CardContent>
-                    <CardFooter className="gap-2">
-                      <Button asChild variant="outline" size="sm" className="flex-1">
+                    <CardFooter className="flex flex-col gap-2">
+                      <Button asChild variant="outline" size="sm" className="w-full whitespace-normal text-center leading-tight">
                         <Link href={`/services/${service.slug}`}>View {service.title} Service</Link>
                       </Button>
-                      <Button asChild size="sm" className="flex-1 gap-1">
+                      <Button asChild size="sm" className="w-full gap-1">
                         <Link href="/order">
                           Request Quote
                           <ArrowRight className="h-3.5 w-3.5" />

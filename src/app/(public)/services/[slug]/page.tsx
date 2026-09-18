@@ -434,10 +434,10 @@ export default async function ServiceDetailPage({
                         </div>
                       </CardContent>
                       <CardContent className="pt-0">
-                        <Button asChild variant="outline" size="sm" className="w-full gap-1">
+                        <Button asChild variant="outline" size="sm" className="w-full gap-1 whitespace-normal text-center leading-tight">
                           <Link href={`/services/${rel.slug}`}>
                             View {rel.title} Service
-                            <ArrowRight className="h-3.5 w-3.5" />
+                            <ArrowRight className="h-3.5 w-3.5 shrink-0" />
                           </Link>
                         </Button>
                       </CardContent>
